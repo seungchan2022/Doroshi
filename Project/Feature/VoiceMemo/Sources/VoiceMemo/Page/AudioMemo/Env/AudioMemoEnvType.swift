@@ -2,14 +2,12 @@ import Foundation
 import ComposableArchitecture
 import Domain
 
-protocol LandingEnvType {
+protocol AudioMemoEnvType {
   var useCaseGroup: VoiceMemoEnvironmentUseable { get }
   var mainQueue: AnySchedulerOf<DispatchQueue> { get }
-  
-  var routeToAudioMemo: () -> Void { get}
 }
 
 
-extension LandingEnvType {
+extension AudioMemoEnvType {
   
 }

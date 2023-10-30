@@ -9,6 +9,7 @@ extension VoiceMemoRouteBuilderGroup {
   public static var release: [RouteBuilderOf<RootNavigator>] {
     [
       LandingRouteBuilder.generate(),
+      AudioMemoRouteBuilder.generate(),
     ]
   }
 }

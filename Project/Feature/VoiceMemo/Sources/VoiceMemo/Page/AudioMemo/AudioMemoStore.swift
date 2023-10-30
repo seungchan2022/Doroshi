@@ -3,17 +3,17 @@ import ComposableArchitecture
 import Domain
 import Foundation
 
-struct LandingStore {
+struct AudioMemoStore {
 
-  init(env: LandingEnvType) {
+  init(env: AudioMemoEnvType) {
     self.env = env
   }
 
   let pageID = UUID().uuidString
-  let env: LandingEnvType
+  let env: AudioMemoEnvType
 }
 
-extension LandingStore: Reducer {
+extension AudioMemoStore: Reducer {
   var body: some ReducerOf<Self> {
     BindingReducer()
     Reduce { state, action in
@@ -24,10 +24,6 @@ extension LandingStore: Reducer {
       case .teardown:
         return .concatenate(
           CancelID.allCases.map { .cancel(pageID: pageID, id: $0) })
-        
-      case .routeToAudioMemo:
-        env.routeToAudioMemo()
-        return .none
 
       case .throwError(let error):
         print(error)
@@ -37,24 +33,22 @@ extension LandingStore: Reducer {
   }
 }
 
-extension LandingStore {
+extension AudioMemoStore {
   struct State: Equatable {
 
   }
 }
 
-extension LandingStore {
+extension AudioMemoStore {
   enum Action: Equatable, BindableAction {
     case binding(BindingAction<State>)
     case teardown
 
-    case routeToAudioMemo
-    
     case throwError(CompositeErrorRepository)
   }
 }
 
-extension LandingStore {
+extension AudioMemoStore {
   enum CancelID: Equatable, CaseIterable {
     case teardown
   }

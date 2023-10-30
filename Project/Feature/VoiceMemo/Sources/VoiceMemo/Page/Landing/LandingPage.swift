@@ -19,6 +19,14 @@ extension LandingPage {
 
 extension LandingPage: View {
   var body: some View {
-    Text("Landing")
+    VStack {
+      Spacer()
+      Text("Landing")
+      Spacer()
+      Button(action: { viewStore.send(.routeToAudioMemo) }) {
+        Text("시작하기")
+      }
+      .padding(.bottom, 30)
+    }
   }
 }
