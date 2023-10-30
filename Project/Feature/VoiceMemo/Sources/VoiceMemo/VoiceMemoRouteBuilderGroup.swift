@@ -8,6 +8,7 @@ public struct VoiceMemoRouteBuilderGroup<RootNavigator: RootNavigatorType> {
 extension VoiceMemoRouteBuilderGroup {
   public static var release: [RouteBuilderOf<RootNavigator>] {
     [
+      LandingRouteBuilder.generate(),
     ]
   }
 }
