@@ -31,6 +31,8 @@ internal enum Asset {
     }
     internal enum Label {
       internal static let labelDefault = ColorAsset(name: "LabelDefault")
+      internal static let labelGradient100 = ColorAsset(name: "LabelGradient100")
+      internal static let labelGradient200 = ColorAsset(name: "LabelGradient200")
     }
     internal enum Palette {
       internal enum Gray {

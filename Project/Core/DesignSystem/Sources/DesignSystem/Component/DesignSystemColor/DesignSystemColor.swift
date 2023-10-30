@@ -43,10 +43,14 @@ extension DesignSystemColor {
 
   public enum LabelChip: Equatable, CaseIterable {
     case `default`
+    case gradient100
+    case gradient200
 
     var color: Color {
       switch self {
       case .`default`: Asset.ColorChip.Label.labelDefault.swiftUIColor
+      case .gradient100: Asset.ColorChip.Label.labelGradient100.swiftUIColor
+      case .gradient200: Asset.ColorChip.Label.labelGradient200.swiftUIColor
       }
     }
   }
