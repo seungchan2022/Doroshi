@@ -4,6 +4,10 @@ public struct TabNavigationComponent {
   let viewState: ViewState
   let tapAction: (String) -> Void
   
+  public init(viewState: ViewState, tapAction: @escaping (String) -> Void) {
+    self.viewState = viewState
+    self.tapAction = tapAction
+  }
 }
 
 extension TabNavigationComponent: View {
@@ -35,11 +39,11 @@ extension TabNavigationComponent: View {
 }
 
 extension TabNavigationComponent {
-  struct ViewState: Equatable {
+  public struct ViewState: Equatable {
     let activeMatchPath: String
     fileprivate let itemList: [ItemComponent]
     
-    init(activeMatchPath: String) {
+    public init(activeMatchPath: String) {
       self.activeMatchPath = activeMatchPath
       self.itemList = [
         .init(

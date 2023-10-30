@@ -4,32 +4,31 @@ import Domain
 import SwiftUI
 import Architecture
 
-struct AudioMemoPage {
+struct SettingPage {
 
-  init(store: StoreOf<AudioMemoStore>) {
+  init(store: StoreOf<SettingStore>) {
     self.store = store
     viewStore = ViewStore(store, observe: { $0 })
   }
 
-  private let store: StoreOf<AudioMemoStore>
-  @ObservedObject private var viewStore: ViewStoreOf<AudioMemoStore>
+  private let store: StoreOf<SettingStore>
+  @ObservedObject private var viewStore: ViewStoreOf<SettingStore>
 }
 
-extension AudioMemoPage {
+extension SettingPage {
   private var tabNavigationComponeentViewState: TabNavigationComponent.ViewState {
-    .init(activeMatchPath: Link.VoiceMemo.Path.audioMemo.rawValue)
+    .init(activeMatchPath: Link.VoiceMemo.Path.setting.rawValue)
   }
   
   private var title: String {
-    "음성 메모"
+    "설정"
   }
-
 }
 
-extension AudioMemoPage: View {
+extension SettingPage: View {
   var body: some View {
     VStack {
-      DesignSystemNavigation(title: "음성 메모") {
+      DesignSystemNavigation(title: title) {
         
       }
       .overlay(alignment: .bottomTrailing) {

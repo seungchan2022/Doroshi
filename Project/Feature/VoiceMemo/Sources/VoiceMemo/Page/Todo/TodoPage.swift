@@ -4,32 +4,34 @@ import Domain
 import SwiftUI
 import Architecture
 
-struct AudioMemoPage {
-
-  init(store: StoreOf<AudioMemoStore>) {
+struct TodoPage {
+  
+  init(store: StoreOf<TodoStore>) {
     self.store = store
     viewStore = ViewStore(store, observe: { $0 })
   }
-
-  private let store: StoreOf<AudioMemoStore>
-  @ObservedObject private var viewStore: ViewStoreOf<AudioMemoStore>
+  
+  private let store: StoreOf<TodoStore>
+  @ObservedObject private var viewStore: ViewStoreOf<TodoStore>
 }
 
-extension AudioMemoPage {
+extension TodoPage {
   private var tabNavigationComponeentViewState: TabNavigationComponent.ViewState {
-    .init(activeMatchPath: Link.VoiceMemo.Path.audioMemo.rawValue)
+    .init(activeMatchPath: Link.VoiceMemo.Path.todo.rawValue)
   }
   
   private var title: String {
-    "음성 메모"
+    """
+    To do list를
+    추가해 보세요.
+    """
   }
-
 }
 
-extension AudioMemoPage: View {
+extension TodoPage: View {
   var body: some View {
     VStack {
-      DesignSystemNavigation(title: "음성 메모") {
+      DesignSystemNavigation(title: title) {
         
       }
       .overlay(alignment: .bottomTrailing) {

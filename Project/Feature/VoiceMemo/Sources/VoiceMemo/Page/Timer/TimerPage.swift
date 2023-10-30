@@ -4,32 +4,31 @@ import Domain
 import SwiftUI
 import Architecture
 
-struct AudioMemoPage {
+struct TimerPage {
 
-  init(store: StoreOf<AudioMemoStore>) {
+  init(store: StoreOf<TimerStore>) {
     self.store = store
     viewStore = ViewStore(store, observe: { $0 })
   }
 
-  private let store: StoreOf<AudioMemoStore>
-  @ObservedObject private var viewStore: ViewStoreOf<AudioMemoStore>
+  private let store: StoreOf<TimerStore>
+  @ObservedObject private var viewStore: ViewStoreOf<TimerStore>
 }
 
-extension AudioMemoPage {
+extension TimerPage {
   private var tabNavigationComponeentViewState: TabNavigationComponent.ViewState {
-    .init(activeMatchPath: Link.VoiceMemo.Path.audioMemo.rawValue)
+    .init(activeMatchPath: Link.VoiceMemo.Path.timer.rawValue)
   }
   
   private var title: String {
-    "음성 메모"
+    "타이머"    
   }
-
 }
 
-extension AudioMemoPage: View {
+extension TimerPage: View {
   var body: some View {
     VStack {
-      DesignSystemNavigation(title: "음성 메모") {
+      DesignSystemNavigation(title: title) {
         
       }
       .overlay(alignment: .bottomTrailing) {

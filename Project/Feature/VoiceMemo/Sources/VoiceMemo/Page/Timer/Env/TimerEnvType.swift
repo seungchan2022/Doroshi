@@ -2,13 +2,14 @@ import Foundation
 import ComposableArchitecture
 import Domain
 
-protocol AudioMemoEnvType {
+protocol TimerEnvType {
   var useCaseGroup: VoiceMemoEnvironmentUseable { get }
   var mainQueue: AnySchedulerOf<DispatchQueue> { get }
   
   var routeToTabItem: (String) -> Void { get }
 }
 
-extension AudioMemoEnvType {
+
+extension TimerEnvType {
   
 }

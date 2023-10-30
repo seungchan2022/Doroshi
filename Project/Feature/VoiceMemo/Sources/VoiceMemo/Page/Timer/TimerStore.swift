@@ -3,17 +3,17 @@ import ComposableArchitecture
 import Domain
 import Foundation
 
-struct AudioMemoStore {
+struct TimerStore {
 
-  init(env: AudioMemoEnvType) {
+  init(env: TimerEnvType) {
     self.env = env
   }
 
   let pageID = UUID().uuidString
-  let env: AudioMemoEnvType
+  let env: TimerEnvType
 }
 
-extension AudioMemoStore: Reducer {
+extension TimerStore: Reducer {
   var body: some ReducerOf<Self> {
     BindingReducer()
     Reduce { state, action in
@@ -28,7 +28,7 @@ extension AudioMemoStore: Reducer {
       case .routeToTabBarItem(let matchPath):
         env.routeToTabItem(matchPath)
         return .none
-        
+
       case .throwError(let error):
         print(error)
         return .none
@@ -37,24 +37,24 @@ extension AudioMemoStore: Reducer {
   }
 }
 
-extension AudioMemoStore {
+extension TimerStore {
   struct State: Equatable {
 
   }
 }
 
-extension AudioMemoStore {
+extension TimerStore {
   enum Action: Equatable, BindableAction {
     case binding(BindingAction<State>)
     case teardown
-    
-    case routeToTabBarItem(String)
 
+    case routeToTabBarItem(String)
+    
     case throwError(CompositeErrorRepository)
   }
 }
 
-extension AudioMemoStore {
+extension TimerStore {
   enum CancelID: Equatable, CaseIterable {
     case teardown
   }

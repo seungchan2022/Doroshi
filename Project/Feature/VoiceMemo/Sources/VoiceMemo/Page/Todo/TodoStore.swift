@@ -3,17 +3,17 @@ import ComposableArchitecture
 import Domain
 import Foundation
 
-struct AudioMemoStore {
+struct TodoStore {
 
-  init(env: AudioMemoEnvType) {
+  init(env: TodoEnvType) {
     self.env = env
   }
 
   let pageID = UUID().uuidString
-  let env: AudioMemoEnvType
+  let env: TodoEnvType
 }
 
-extension AudioMemoStore: Reducer {
+extension TodoStore: Reducer {
   var body: some ReducerOf<Self> {
     BindingReducer()
     Reduce { state, action in
@@ -28,7 +28,8 @@ extension AudioMemoStore: Reducer {
       case .routeToTabBarItem(let matchPath):
         env.routeToTabItem(matchPath)
         return .none
-        
+
+
       case .throwError(let error):
         print(error)
         return .none
@@ -37,13 +38,13 @@ extension AudioMemoStore: Reducer {
   }
 }
 
-extension AudioMemoStore {
+extension TodoStore {
   struct State: Equatable {
 
   }
 }
 
-extension AudioMemoStore {
+extension TodoStore {
   enum Action: Equatable, BindableAction {
     case binding(BindingAction<State>)
     case teardown
@@ -54,7 +55,7 @@ extension AudioMemoStore {
   }
 }
 
-extension AudioMemoStore {
+extension TodoStore {
   enum CancelID: Equatable, CaseIterable {
     case teardown
   }

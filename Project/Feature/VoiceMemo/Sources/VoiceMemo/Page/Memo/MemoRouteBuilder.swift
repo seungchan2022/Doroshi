@@ -1,18 +1,18 @@
 import Architecture
 import LinkNavigator
 
-struct AudioMemoRouteBuilder<RootNavigator: RootNavigatorType> {
+struct MemoRouteBuilder<RootNavigator: RootNavigatorType> {
   static func generate() -> RouteBuilderOf<RootNavigator> {
-    let matchPath = Link.VoiceMemo.Path.audioMemo.rawValue
+    let matchPath = Link.VoiceMemo.Path.memo.rawValue
 
     return .init(matchPath: matchPath) { navigator, _, diContainer -> RouteViewController? in
       guard let env: VoiceMemoEnvironmentUseable = diContainer.resolve() else { return .none }
 
       return WrappingController(matchPath: matchPath) {
-        AudioMemoPage(store: .init(
-          initialState: AudioMemoStore.State(),
+        MemoPage(store: .init(
+          initialState: MemoStore.State(),
           reducer: {
-            AudioMemoStore(env: AudioMemoEnvLive(
+            MemoStore(env: MemoEnvLive(
               useCaseGroup: env,
               navigator: navigator))
           }))
