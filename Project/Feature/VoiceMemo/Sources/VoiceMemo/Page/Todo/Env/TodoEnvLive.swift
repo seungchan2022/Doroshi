@@ -20,10 +20,12 @@ extension TodoEnvLive: TodoEnvType {
     }
   }
   
-  var routeToTodoEditor: () -> Void {
-    {
+  var routeToTodoEditor: (TodoEntity.Item?) -> Void {
+    { item in
       navigator.backOrNext(
-        linkItem: .init(path: Link.VoiceMemo.Path.todoEditor.rawValue),
+        linkItem: .init(
+          path: Link.VoiceMemo.Path.todoEditor.rawValue,
+          items: item?.encoded() ?? ""),
         isAnimated: true)
     }
   }

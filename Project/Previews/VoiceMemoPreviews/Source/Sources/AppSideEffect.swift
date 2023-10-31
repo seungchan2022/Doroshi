@@ -5,10 +5,11 @@ import Platform
 import LinkNavigator
 
 struct AppSideEffect: DependencyType, VoiceMemoEnvironmentUseable {
+  let todoUseCase: TodoUseCase
 }
 
 extension AppSideEffect {
   static func build() -> Self {
-    .init()
+    .init(todoUseCase: TodoUseCasePlatform())
   }
 }

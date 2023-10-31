@@ -30,7 +30,8 @@ extension TodoEditorStore: Reducer {
         return .none
         
       case .onTapCreate:
-        return .none
+        return env.save(state)
+          .cancellable(pageID: pageID, id: CancelID.requestSaveItem)
         
       case .onTapDateSheet:
         state.route = .datePickerSheet(state.date)
@@ -43,6 +44,16 @@ extension TodoEditorStore: Reducer {
       case .onRouteClear:
         state.route = .none
         return .none
+        
+      case .fetchCreate(let result):
+        switch result {
+        case .success:
+          env.routeToBack()
+          return .none
+          
+        case .failure(let error):
+          return .run { await $0(.throwError(error))}
+        }
 
       case .throwError(let error):
         print(error)
@@ -54,6 +65,12 @@ extension TodoEditorStore: Reducer {
 
 extension TodoEditorStore {
   struct State: Equatable {
+    init(title: String?, date: Date?) {
+      self.title = title  ?? ""
+      self.date = date ?? .now
+      self.route = route
+    }
+    
     @BindingState var title = ""
     @BindingState var date = Date.now
     @BindingState var route: Route?
@@ -73,6 +90,7 @@ extension TodoEditorStore {
     
     case onRouteClear
 
+    case fetchCreate(Result<TodoEntity.Item, CompositeErrorRepository>)
     case throwError(CompositeErrorRepository)
   }
 }
@@ -80,6 +98,7 @@ extension TodoEditorStore {
 extension TodoEditorStore {
   enum CancelID: Equatable, CaseIterable {
     case teardown
+    case requestSaveItem
   }
   
   enum Route: Equatable {

@@ -32,7 +32,8 @@ extension TabNavigationComponent: View {
     .padding(.top, 8)
     .background {
       Rectangle()
-        .fill(DesignSystemColor.system(.white).color)
+//        .fill(DesignSystemColor.system(.white).color)
+        .fill(DesignSystemColor.label(.default).color)
         .shadow(color: .black.opacity(0.2), radius: 10, x: 0.0, y: -1)
         .ignoresSafeArea(.all, edges: .bottom)
     }

@@ -49,15 +49,21 @@ extension TodoPage: View {
         }
         .padding(.trailing, 30)
         .padding(.bottom, 40)
-
+        
       }
+      
+      Spacer()
+      
       TabNavigationComponent(
         viewState: tabNavigationComponeentViewState,
         tapAction: { viewStore.send(.routeToTabBarItem($0)) })
-//      .ignoresSafeArea(.all, edges: .bottom)
+      
     }
+    
     .navigationTitle("")
     .navigationBarHidden(true)
-    
+    .onAppear {
+      viewStore.send(.getTotoList)
+    }
   }
 }
