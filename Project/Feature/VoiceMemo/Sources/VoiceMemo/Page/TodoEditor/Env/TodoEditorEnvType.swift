@@ -2,15 +2,14 @@ import Foundation
 import ComposableArchitecture
 import Domain
 
-protocol TodoEnvType {
+protocol TodoEditorEnvType {
   var useCaseGroup: VoiceMemoEnvironmentUseable { get }
   var mainQueue: AnySchedulerOf<DispatchQueue> { get }
   
-  var routeToTabItem: (String) -> Void { get }
-  var routeToTodoEditor: () -> Void { get }
+  var routeToBack: () -> Void { get }
 }
 
 
-extension TodoEnvType {
+extension TodoEditorEnvType {
   
 }

@@ -29,7 +29,10 @@ extension TodoStore: Reducer {
         env.routeToTabItem(matchPath)
         return .none
 
-
+      case .onTapTodoEditor:
+        env.routeToTodoEditor()
+        return .none
+        
       case .throwError(let error):
         print(error)
         return .none
@@ -50,6 +53,8 @@ extension TodoStore {
     case teardown
     
     case routeToTabBarItem(String)
+    
+    case onTapTodoEditor
 
     case throwError(CompositeErrorRepository)
   }

@@ -7,9 +7,10 @@ extension Link {
 extension Link.VoiceMemo {
   public enum Path: String, Equatable {
     case landing
-    case todo
-    case memo
     case audioMemo
+    case todo
+    case todoEditor
+    case memo
     case timer
     case setting
   }

@@ -35,15 +35,26 @@ extension TodoPage: View {
         
       }
       .overlay(alignment: .bottomTrailing) {
-        Circle()
-          .fill(.red)
-          .frame(width: 50, height: 50)
-          .padding(.trailing, 30)
-          .padding(.bottom, 40)
+        Button(action: { viewStore.send(.onTapTodoEditor) }) {
+          DesignSystemIcon.pencil.image
+            .resizable()
+            .frame(width: 20, height: 20)
+            .foregroundStyle(DesignSystemColor.system(.white).color)
+            .padding(15)
+            .background {
+              Circle()
+                .fill(DesignSystemColor.label(.default).color)
+                .frame(width: 50, height: 50)
+            }
+        }
+        .padding(.trailing, 30)
+        .padding(.bottom, 40)
+
       }
       TabNavigationComponent(
         viewState: tabNavigationComponeentViewState,
         tapAction: { viewStore.send(.routeToTabBarItem($0)) })
+//      .ignoresSafeArea(.all, edges: .bottom)
     }
     .navigationTitle("")
     .navigationBarHidden(true)

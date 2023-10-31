@@ -3,14 +3,14 @@ import SwiftUI
 public struct DesignSystemNavigationBar {
 
   let backAction: (() -> Void)?
-  let moteActionList: [MoreAction]
+  let  moreActionList: [MoreAction]
 
   public init(
     backAction: (() -> Void)? = .none,
-    moteActionList: [MoreAction] = [])
+     moreActionList: [MoreAction] = [])
   {
     self.backAction = backAction
-    self.moteActionList = moteActionList
+    self.moreActionList =  moreActionList
   }
 }
 
@@ -43,7 +43,7 @@ extension DesignSystemNavigationBar: View {
       }
       .overlay(alignment: .trailing) {
         HStack(spacing: 8) {
-          ForEach(moteActionList, id: \.id) { item in
+          ForEach( moreActionList, id: \.id) { item in
             Button(action: item.action) {
               Text(item.title)
                 .font(.system(size: 14, weight: .regular, design: .default))
@@ -65,6 +65,11 @@ extension DesignSystemNavigationBar {
   public struct MoreAction: Equatable, Identifiable {
     let title: String
     let action: () -> Void
+    
+    public init(title: String, action: @escaping () -> Void) {
+      self.title = title
+      self.action = action
+    }
 
     public var id: String { title }
 
@@ -79,7 +84,7 @@ extension DesignSystemNavigationBar {
   VStack {
     DesignSystemNavigationBar(
       backAction: { print("hello") },
-      moteActionList: [
+       moreActionList: [
         .init(title: "Create", action: { }),
         .init(title: "Done", action: { }),
       ])

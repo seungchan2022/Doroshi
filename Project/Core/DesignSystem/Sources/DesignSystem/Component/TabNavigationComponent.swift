@@ -29,12 +29,13 @@ extension TabNavigationComponent: View {
       }
     }
     .padding(.horizontal, 16)
-    .background(
-    Rectangle()
-      .fill(DesignSystemColor.system(.white).color)
-      .shadow(color: .black.opacity(0.2), radius: 10, x: 0.0, y: -1)
-      
-    )
+    .padding(.top, 8)
+    .background {
+      Rectangle()
+        .fill(DesignSystemColor.system(.white).color)
+        .shadow(color: .black.opacity(0.2), radius: 10, x: 0.0, y: -1)
+        .ignoresSafeArea(.all, edges: .bottom)
+    }
   }
 }
 
@@ -114,5 +115,6 @@ extension LinearGradient {
       viewState: .init(activeMatchPath: "audioMemo"),
       tapAction: { _ in })
   }
-  .background(.red)
+//  .background(.red)
 }
+

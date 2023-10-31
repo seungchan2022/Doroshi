@@ -19,4 +19,12 @@ extension TodoEnvLive: TodoEnvType {
       
     }
   }
+  
+  var routeToTodoEditor: () -> Void {
+    {
+      navigator.backOrNext(
+        linkItem: .init(path: Link.VoiceMemo.Path.todoEditor.rawValue),
+        isAnimated: true)
+    }
+  }
 }

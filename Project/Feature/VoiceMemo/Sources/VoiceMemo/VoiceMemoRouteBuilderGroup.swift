@@ -14,6 +14,7 @@ extension VoiceMemoRouteBuilderGroup {
       AudioMemoRouteBuilder.generate(),
       TimerRouteBuilder.generate(),
       SettingRouteBuilder.generate(),
+      TodoEditorRouteBuilder.generate(),
     ]
   }
 }

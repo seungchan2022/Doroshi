@@ -16,7 +16,7 @@ public enum DesignSystemColor: Equatable, CaseIterable {
     + TintChip.allCases.map(Self.tint)
   }
 
-  var color: Color {
+ public var color: Color {
     switch self {
     case .background(let chip): chip.color
     case .label(let chip): chip.color

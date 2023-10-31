@@ -54,7 +54,7 @@ extension DesignSystemNavigation: View {
   DesignSystemNavigation(
     barItem: .init(
       backAction: {},
-      moteActionList: [
+       moreActionList: [
         .init(title: "more", action: {})
       ]),
     title: "메모장") {
