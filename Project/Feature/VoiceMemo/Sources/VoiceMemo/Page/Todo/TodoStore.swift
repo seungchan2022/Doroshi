@@ -50,6 +50,10 @@ extension TodoStore: Reducer {
           return .run { await $0(.throwError(error))}
         }
         
+      case .onTapEdit:
+        // env에서 edit에 대한 로직 구현
+        return .none
+        
       case .throwError(let error):
         print(error)
         return .none
@@ -77,6 +81,8 @@ extension TodoStore {
     
     case routeToTabBarItem(String)
     case onTapTodoEditor
+    
+    case onTapEdit
     
     case fetchTodoList(Result<[TodoEntity.Item], CompositeErrorRepository>)
     

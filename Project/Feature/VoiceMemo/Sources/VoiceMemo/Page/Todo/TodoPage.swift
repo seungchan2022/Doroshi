@@ -31,9 +31,77 @@ extension TodoPage {
 extension TodoPage: View {
   var body: some View {
     VStack {
-      DesignSystemNavigation(title: title) {
-        
+      
+      VStack {
+        if !viewStore.fetchTodoList.isEmpty {
+          DesignSystemNavigation(
+            barItem: .init(
+              moreActionList: [
+                .init(title: "편집", action: {  })
+              ]),
+            title: "To do list \(viewStore.fetchTodoList.count)개가\n있습니다.")
+          {
+            VStack(alignment: .leading) {
+              Text("할일 목록")
+                .font(.system(size: 16, weight: .bold))
+              
+              Divider()
+                .background(DesignSystemColor.palette(.gray(.lv100)).color)
+              
+              
+              ForEach(viewStore.fetchTodoList) { item in
+                HStack {
+                  Button(action: { }) {
+                    DesignSystemIcon.unChecked.image
+                      .resizable()
+                      .frame(width: 25, height: 25)
+                      .foregroundStyle(DesignSystemColor.palette(.gray(.lv300)).color)
+                  }
+                  
+                  VStack(alignment: .leading, spacing: 4) {
+                    
+                    //                    if item.title != .none && ((item.title?.isEmpty) == nil) {
+                    if let title = item.title, !title.isEmpty {
+                      Text(item.title ?? "")
+                        .font(.system(size: 16))
+                        .border(.red, width: 1)
+                    }
+                    Text("\(Date(timeInterval: item.date).formattedDate)")
+                      .font(.system(size: 12))
+                      .foregroundStyle(DesignSystemColor.palette(.gray(.lv300)).color)
+                  }
+                  
+                  Spacer()
+                }
+                .frame(minHeight: 60)
+                .frame(maxWidth: .infinity)
+                
+                Divider()
+                  .background(DesignSystemColor.palette(.gray(.lv100)).color)
+              }
+            }
+            .padding(.horizontal, 30)
+          }
+        } else {
+          DesignSystemNavigation(title: title) {
+            
+            DesignSystemIcon.pencil.image
+              .resizable()
+              .frame(width: 20, height: 20)
+              .foregroundStyle(DesignSystemColor.palette(.gray(.lv400)).color)
+              .padding(.top, 180)
+            
+            VStack(spacing: 8) {
+              Text("\"매일 아침 8시 운동가라고 알려줘\"")
+              Text("\"내일 8시 수강신청하라고 알려줘\"")
+              Text("\"1시 반 점심약속 리마인드 해줘\"")
+            }
+            .foregroundStyle(DesignSystemColor.palette(.gray(.lv400)).color)
+            
+          }
+        }
       }
+      
       .overlay(alignment: .bottomTrailing) {
         Button(action: { viewStore.send(.onTapTodoEditor) }) {
           DesignSystemIcon.pencil.image
@@ -65,5 +133,26 @@ extension TodoPage: View {
     .onAppear {
       viewStore.send(.getTotoList)
     }
+  }
+}
+
+extension Date {
+  fileprivate var formattedDate: String {
+    if isDateToday {
+      return "오늘 "
+    } else {
+      let dateFormatter = DateFormatter()
+      dateFormatter.locale = Locale(identifier: "ko_KR")
+      dateFormatter.dateFormat = "M월 d일 EEEE"
+      return dateFormatter.string(from: self)
+    }
+  }
+  
+  init(timeInterval: Double) {
+    self.init(timeIntervalSince1970: timeInterval)
+  }
+  
+  fileprivate var isDateToday: Bool {
+    return Calendar.current.isDateInToday(self)
   }
 }

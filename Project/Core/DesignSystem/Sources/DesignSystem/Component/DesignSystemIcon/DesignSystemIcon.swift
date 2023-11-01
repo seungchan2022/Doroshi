@@ -11,6 +11,8 @@ public enum DesignSystemIcon {
   case timer
   case todo
   case pencil
+  case unChecked
+  case checked
 
   public var image: Image {
     var image: Image {
@@ -24,6 +26,8 @@ public enum DesignSystemIcon {
       case .timer: Asset.Icon.icTimer.swiftUIImage
       case .todo: Asset.Icon.icTodo.swiftUIImage
       case .pencil: Image(systemName: "pencil")
+      case .unChecked: Image(systemName: "rectangle")
+      case .checked: Image(systemName: "checkmark.rectangle")
       }
     }
 
