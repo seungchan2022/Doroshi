@@ -19,5 +19,12 @@ extension MemoEnvLive: MemoEnvType {
       
     }
   }
-
+  
+  var routeToMemoEditor: () -> Void {
+    {
+      navigator.backOrNext(
+        linkItem: .init(path: Link.VoiceMemo.Path.memoEditor.rawValue),
+        isAnimated: true)
+    }
+  }
 }

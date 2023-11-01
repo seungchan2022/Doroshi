@@ -35,11 +35,21 @@ extension MemoPage: View {
         
       }
       .overlay(alignment: .bottomTrailing) {
-        Circle()
-          .fill(.red)
-          .frame(width: 50, height: 50)
-          .padding(.trailing, 30)
-          .padding(.bottom, 40)
+        Button(action: { viewStore.send(.onTapMemoEditor) }) {
+          DesignSystemIcon.pencil.image
+            .resizable()
+            .frame(width: 20, height: 20)
+            .foregroundStyle(DesignSystemColor.system(.white).color)
+            .padding(15)
+            .background {
+              Circle()
+                .fill(DesignSystemColor.label(.default).color)
+                .frame(width: 50, height: 50)
+            }
+        }
+        .padding(.trailing, 30)
+        .padding(.bottom, 40)
+        
       }
       TabNavigationComponent(
         viewState: tabNavigationComponeentViewState,

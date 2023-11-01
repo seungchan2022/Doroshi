@@ -9,12 +9,13 @@ extension VoiceMemoRouteBuilderGroup {
   public static var release: [RouteBuilderOf<RootNavigator>] {
     [
       LandingRouteBuilder.generate(),
-      TodoRouteBuilder.generate(),
-      MemoRouteBuilder.generate(),
       AudioMemoRouteBuilder.generate(),
+      TodoRouteBuilder.generate(),
+      TodoEditorRouteBuilder.generate(),
+      MemoRouteBuilder.generate(),
+      MemoEditorRouteBuilder.generate(),
       TimerRouteBuilder.generate(),
       SettingRouteBuilder.generate(),
-      TodoEditorRouteBuilder.generate(),
     ]
   }
 }

@@ -2,15 +2,15 @@ import Foundation
 import ComposableArchitecture
 import Domain
 
-protocol MemoEnvType {
+protocol MemoEditorEnvType {
   var useCaseGroup: VoiceMemoEnvironmentUseable { get }
   var mainQueue: AnySchedulerOf<DispatchQueue> { get }
   
-  var routeToTabItem: (String) -> Void { get }
-  var routeToMemoEditor: () -> Void { get }
+  var routeToBack: () -> Void { get }
+  
 }
 
 
-extension MemoEnvType {
+extension MemoEditorEnvType {
   
 }
