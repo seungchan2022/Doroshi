@@ -20,10 +20,12 @@ extension MemoEnvLive: MemoEnvType {
     }
   }
   
-  var routeToMemoEditor: () -> Void {
-    {
+  var routeToMemoEditor: (MemoEntity.Item?) -> Void {
+    { item in
       navigator.backOrNext(
-        linkItem: .init(path: Link.VoiceMemo.Path.memoEditor.rawValue),
+        linkItem: .init(
+          path: Link.VoiceMemo.Path.memoEditor.rawValue,
+          items: item?.encoded() ?? ""),
         isAnimated: true)
     }
   }

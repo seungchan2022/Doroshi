@@ -55,6 +55,9 @@ extension MemoPage: View {
         viewState: tabNavigationComponeentViewState,
         tapAction: { viewStore.send(.routeToTabBarItem($0)) })
     }
+    .onAppear {
+      viewStore.send(.getMemoList)
+    }
     .navigationTitle("")
     .navigationBarHidden(true)
     

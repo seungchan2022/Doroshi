@@ -29,7 +29,7 @@ extension TodoEditorEnvType {
 }
 
 extension TodoEditorStore.State {
-  func serialized() -> TodoEntity.Item {
+  fileprivate func serialized() -> TodoEntity.Item {
     .init(isChecked: .none, title: title, date: date.timeIntervalSince1970)
   }
 }
