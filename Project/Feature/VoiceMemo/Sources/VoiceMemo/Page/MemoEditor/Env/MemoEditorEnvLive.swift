@@ -17,5 +17,4 @@ extension MemoEditorEnvLive: MemoEditorEnvType {
       navigator.back(isAnimated: true)
     }
   }
-
 }
