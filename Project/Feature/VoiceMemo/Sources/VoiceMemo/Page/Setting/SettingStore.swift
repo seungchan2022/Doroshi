@@ -4,11 +4,11 @@ import Domain
 import Foundation
 
 struct SettingStore {
-
+  
   init(env: SettingEnvType) {
     self.env = env
   }
-
+  
   let pageID = UUID().uuidString
   let env: SettingEnvType
 }
@@ -20,7 +20,7 @@ extension SettingStore: Reducer {
       switch action {
       case .binding:
         return .none
-
+        
       case .teardown:
         return .concatenate(
           CancelID.allCases.map { .cancel(pageID: pageID, id: $0) })
@@ -28,7 +28,23 @@ extension SettingStore: Reducer {
       case .routeToTabBarItem(let matchPath):
         env.routeToTabItem(matchPath)
         return .none
-
+        
+      case .onTapTodo:
+        env.routeToTodo()
+        return .none
+        
+      case .onTapMemo:
+        env.routeToMemo()
+        return .none
+        
+      case .onTapAudioMemo:
+        env.routeToAudioMemo()
+        return .none
+        
+      case .onTapTimer:
+        env.routeToTimer()
+        return .none
+        
       case .throwError(let error):
         print(error)
         return .none
@@ -39,7 +55,7 @@ extension SettingStore: Reducer {
 
 extension SettingStore {
   struct State: Equatable {
-
+    
   }
 }
 
@@ -49,7 +65,12 @@ extension SettingStore {
     case teardown
     
     case routeToTabBarItem(String)
-
+    
+    case onTapTodo
+    case onTapMemo
+    case onTapAudioMemo
+    case onTapTimer
+    
     case throwError(CompositeErrorRepository)
   }
 }
