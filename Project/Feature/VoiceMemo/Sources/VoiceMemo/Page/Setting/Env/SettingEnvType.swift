@@ -7,6 +7,11 @@ protocol SettingEnvType {
   var mainQueue: AnySchedulerOf<DispatchQueue> { get }
   
   var routeToTabItem: (String) -> Void { get }
+  
+  var routeToTodo: () -> Void { get }
+  var routeToMemo: () -> Void { get }
+  var routeToAudioMemo: () -> Void { get }
+  var routeToTimer: () -> Void { get }
 }
 
 

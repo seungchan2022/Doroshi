@@ -19,4 +19,36 @@ extension SettingEnvLive: SettingEnvType {
       
     }
   }
+  
+  var routeToTodo: () -> Void {
+    {
+      navigator.backOrNext(
+        linkItem: .init(path: Link.VoiceMemo.Path.todo.rawValue),
+        isAnimated: false)
+    }
+  }
+  
+  var routeToMemo: () -> Void {
+    {
+      navigator.backOrNext(
+        linkItem: .init(path: Link.VoiceMemo.Path.memo.rawValue),
+        isAnimated: false)
+    }
+  }
+  
+  var routeToAudioMemo: () -> Void {
+    {
+      navigator.backOrNext(
+        linkItem: .init(path: Link.VoiceMemo.Path.audioMemo.rawValue),
+        isAnimated: false)
+    }
+  }
+  
+  var routeToTimer: () -> Void {
+    {
+      navigator.backOrNext(
+        linkItem: .init(path: Link.VoiceMemo.Path.timer.rawValue),
+        isAnimated: false)
+    }
+  }
 }
