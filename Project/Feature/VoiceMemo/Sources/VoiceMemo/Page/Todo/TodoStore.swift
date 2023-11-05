@@ -54,6 +54,19 @@ extension TodoStore: Reducer {
         // env에서 edit에 대한 로직 구현
         return .none
         
+//      case .onTapDelete:
+//        return env.deleteList(state)
+//          .cancellable(pageID: pageID, id: CancelID.requestDeleteTodoList)
+
+      case .onTapDelete(let item):
+        return env.delete(item)
+          .cancellable(pageID: pageID, id: CancelID.requestDeleteTodo)
+      
+      case .editTodo(let item):
+        env.editTodo(item)
+        
+        return .none
+        
       case .throwError(let error):
         print(error)
         return .none
@@ -80,13 +93,17 @@ extension TodoStore {
     case getTotoList
     
     case routeToTabBarItem(String)
-    case onTapTodoEditor
+    case onTapTodoEditor  // 투두 작성 버튼
     
-    case onTapEdit
+    case onTapEdit  // 네비게이션 버튼
+    case onTapDelete(TodoEntity.Item) // 개별 아이템 삭제
+    
+    case editTodo(TodoEntity.Item)  // 해당 투두로 들어가는
     
     case fetchTodoList(Result<[TodoEntity.Item], CompositeErrorRepository>)
     
     case throwError(CompositeErrorRepository)
+    
   }
 }
 
@@ -94,5 +111,7 @@ extension TodoStore {
   enum CancelID: Equatable, CaseIterable {
     case teardown
     case requestGetTodoList
+//    case requestDeleteTodoList
+    case requestDeleteTodo
   }
 }

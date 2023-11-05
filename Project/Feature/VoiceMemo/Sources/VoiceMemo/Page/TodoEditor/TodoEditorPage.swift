@@ -66,6 +66,7 @@ extension TodoEditorPage: View {
         .padding(.horizontal, 30)
         
       }
+      .scrollDisabled(true)
     }
     .sheet(
       unwrapping: viewStore.$route,

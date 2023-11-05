@@ -37,7 +37,7 @@ extension TodoPage: View {
           DesignSystemNavigation(
             barItem: .init(
               moreActionList: [
-                .init(title: "편집", action: {  })
+                .init(title: "삭제", action: { }),
               ]),
             title: "To do list \(viewStore.fetchTodoList.count)개가\n있습니다.")
           {
@@ -51,7 +51,7 @@ extension TodoPage: View {
               
               ForEach(viewStore.fetchTodoList) { item in
                 HStack {
-                  Button(action: { }) {
+                  Button(action: {  }) {
                     DesignSystemIcon.unChecked.image
                       .resizable()
                       .frame(width: 25, height: 25)
@@ -64,7 +64,6 @@ extension TodoPage: View {
                     if let title = item.title, !title.isEmpty {
                       Text(item.title ?? "")
                         .font(.system(size: 16))
-                        .border(.red, width: 1)
                     }
                     Text("\(Date(timeInterval: item.date).formattedDate)")
                       .font(.system(size: 12))
@@ -72,9 +71,20 @@ extension TodoPage: View {
                   }
                   
                   Spacer()
+                  
+                  
+                  Button(action: { viewStore.send(.onTapDelete(item))
+                    print("tapped")}) {
+                    Text("삭제")
+                  }
                 }
-                .frame(minHeight: 60)
+                .frame(minHeight: 50)
                 .frame(maxWidth: .infinity)
+                
+                // 수정하기 수정
+                .onTapGesture {
+                  viewStore.send(.editTodo(item))
+                }
                 
                 Divider()
                   .background(DesignSystemColor.palette(.gray(.lv100)).color)
@@ -148,7 +158,7 @@ extension Date {
     }
   }
   
-  init(timeInterval: Double) {
+  fileprivate init(timeInterval: Double) {
     self.init(timeIntervalSince1970: timeInterval)
   }
   
