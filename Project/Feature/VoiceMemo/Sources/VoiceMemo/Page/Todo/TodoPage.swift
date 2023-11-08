@@ -37,7 +37,9 @@ extension TodoPage: View {
           DesignSystemNavigation(
             barItem: .init(
               moreActionList: [
-                .init(title: "삭제", action: { }),
+                .init(title: "선택된 것들 삭제", action: {
+                  viewStore.send(.onTapDeleteList(viewStore.fetchTodoList))
+                }),
               ]),
             title: "To do list \(viewStore.fetchTodoList.count)개가\n있습니다.")
           {
@@ -51,32 +53,35 @@ extension TodoPage: View {
               
               ForEach(viewStore.fetchTodoList) { item in
                 HStack {
-                  Button(action: {  }) {
-                    DesignSystemIcon.unChecked.image
+                  
+                  Button(action: { viewStore.send(.onTapChecked(item)) }) {
+                    // 체크박스 뷰를 렌더링
+                    Image(systemName: item.isChecked ? "checkmark.square" : "square")
                       .resizable()
                       .frame(width: 25, height: 25)
-                      .foregroundStyle(DesignSystemColor.palette(.gray(.lv300)).color)
                   }
                   
+                  Text("\(String(item.isChecked))")
+                  
                   VStack(alignment: .leading, spacing: 4) {
-                    
                     //                    if item.title != .none && ((item.title?.isEmpty) == nil) {
                     if let title = item.title, !title.isEmpty {
                       Text(item.title ?? "")
                         .font(.system(size: 16))
+                        .strikethrough(item.isChecked, color: DesignSystemColor.palette(.gray(.lv400)).color)
                     }
+                    
                     Text("\(Date(timeInterval: item.date).formattedDate)")
                       .font(.system(size: 12))
                       .foregroundStyle(DesignSystemColor.palette(.gray(.lv300)).color)
                   }
                   
                   Spacer()
-                  
-                  
+
                   Button(action: { viewStore.send(.onTapDelete(item))
                     print("tapped")}) {
-                    Text("삭제")
-                  }
+                      Text("삭제")
+                    }
                 }
                 .frame(minHeight: 50)
                 .frame(maxWidth: .infinity)

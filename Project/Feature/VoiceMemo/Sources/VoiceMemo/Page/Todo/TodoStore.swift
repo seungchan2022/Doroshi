@@ -4,11 +4,11 @@ import Domain
 import Foundation
 
 struct TodoStore {
-
+  
   init(env: TodoEnvType) {
     self.env = env
   }
-
+  
   let pageID = UUID().uuidString
   let env: TodoEnvType
 }
@@ -20,7 +20,7 @@ extension TodoStore: Reducer {
       switch action {
       case .binding:
         return .none
-
+        
       case .teardown:
         return .concatenate(
           CancelID.allCases.map { .cancel(pageID: pageID, id: $0) })
@@ -32,7 +32,7 @@ extension TodoStore: Reducer {
       case .routeToTabBarItem(let matchPath):
         env.routeToTabItem(matchPath)
         return .none
-
+        
       case .onTapTodoEditor:
         env.routeToTodoEditor(.none)
         return .none
@@ -41,9 +41,6 @@ extension TodoStore: Reducer {
         switch result {
         case .success(let list):
           state.fetchTodoList = list
-//          DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-//            env.routeToTodoEditor(list.last)
-//          }
           return .none
           
         case .failure(let error):
@@ -54,14 +51,19 @@ extension TodoStore: Reducer {
         // env에서 edit에 대한 로직 구현
         return .none
         
-//      case .onTapDelete:
-//        return env.deleteList(state)
-//          .cancellable(pageID: pageID, id: CancelID.requestDeleteTodoList)
-
       case .onTapDelete(let item):
         return env.delete(item)
           .cancellable(pageID: pageID, id: CancelID.requestDeleteTodo)
-      
+
+      case .onTapDeleteList(let list):
+        return env.deleteList(list)
+          .cancellable(pageID: pageID, id: CancelID.requestDeleteList)
+
+      case .onTapChecked(let item):
+        let new = TodoEntity.Item(isChecked: !item.isChecked, title: item.title, date: item.date)
+        state.fetchTodoList = state.fetchTodoList.map { $0.id != item.id ? $0 : new }
+        return .none
+        
       case .editTodo(let item):
         env.editTodo(item)
         
@@ -93,10 +95,15 @@ extension TodoStore {
     case getTotoList
     
     case routeToTabBarItem(String)
+    
+    
     case onTapTodoEditor  // 투두 작성 버튼
     
     case onTapEdit  // 네비게이션 버튼
     case onTapDelete(TodoEntity.Item) // 개별 아이템 삭제
+    case onTapDeleteList([TodoEntity.Item]) // 선택된 아이템들 삭제
+    
+    case onTapChecked(TodoEntity.Item)  // Item의 isChecked 토글
     
     case editTodo(TodoEntity.Item)  // 해당 투두로 들어가는
     
@@ -111,7 +118,7 @@ extension TodoStore {
   enum CancelID: Equatable, CaseIterable {
     case teardown
     case requestGetTodoList
-//    case requestDeleteTodoList
+    case requestDeleteList
     case requestDeleteTodo
   }
 }

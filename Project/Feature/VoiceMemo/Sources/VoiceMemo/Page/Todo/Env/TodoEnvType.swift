@@ -9,9 +9,9 @@ protocol TodoEnvType {
   
   var todoList: () -> Effect<TodoStore.Action> { get }
   
-//  var deleteList: (TodoStore.State) -> Effect<TodoStore.Action> { get }
   var delete: (TodoEntity.Item) -> Effect<TodoStore.Action> { get }
   
+  var deleteList: ([TodoEntity.Item]) -> Effect<TodoStore.Action> { get }
   
   var editTodo: (TodoEntity.Item?) -> Void { get }
   
@@ -32,29 +32,24 @@ extension TodoEnvType {
   
   var delete: (TodoEntity.Item) -> Effect<TodoStore.Action> {
     { target in
-      .publisher {
-        Just(target)
-          .map(useCaseGroup.todoUseCase.delete)
-          .receive(on: mainQueue)
-          .map { .fetchTodoList(.success($0))}
-      }
-      
+        .publisher {
+          Just(target)
+            .map(useCaseGroup.todoUseCase.delete)
+            .receive(on: mainQueue)
+            .map { .fetchTodoList(.success($0)) }
+        }
     }
   }
-
-//  var deleteList: (TodoStore.State) -> Effect<TodoStore.Action> {
-//    { state in
-//        .publisher {
-//          Just(state.fetchTodoList)
-////            .filter { $0.isChecked == true }
-//            .map(useCaseGroup.todoUseCase.delete)
-//            .receive(on: mainQueue)
-//            .map {
-//              TodoStore.Action.fetchTodoList(.success($0))
-//            }
-//          
-//        }
-//    }
-//  }
+  
+    var deleteList: ([TodoEntity.Item]) -> Effect<TodoStore.Action> {
+      { targetList in
+          .publisher {
+            Just(targetList.filter { $0.isChecked == true })
+              .map(useCaseGroup.todoUseCase.deleteTargetList)
+              .receive(on: mainQueue)
+              .map { .fetchTodoList(.success($0)) }
+          }
+      }
+    }
 }
 
