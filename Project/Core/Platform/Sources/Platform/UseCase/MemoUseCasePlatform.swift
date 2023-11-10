@@ -9,6 +9,7 @@ public struct MemoUseCasePlatform {
 }
 
 extension MemoUseCasePlatform: MemoUseCase {
+  
   public var create: (MemoEntity.Item) -> MemoEntity.Item {
     { new in
       let currentItemList = client.getItem()
@@ -18,7 +19,7 @@ extension MemoUseCasePlatform: MemoUseCase {
     }
   }
   
-  public var delete: ([MemoEntity.Item]) -> [MemoEntity.Item] {
+  public var deleteTargetList: ([MemoEntity.Item]) -> [MemoEntity.Item] {
     { targetList in
       let currentItemList = client.getItem()
       let newItemList = currentItemList.delete(targetList: targetList)
@@ -44,7 +45,7 @@ extension [MemoEntity.Item] {
   
   fileprivate func delete(targetList: [MemoEntity.Item]) -> Self {
     self.filter { item in
-      !targetList.contains(where: { $0.id == item.id})
+      !targetList.contains(where: { $0.id == item.id })
     }
   }
 }

@@ -41,14 +41,22 @@ extension MemoStore: Reducer {
         switch result {
         case .success(let list):
           state.fetchMemoList = list
-//          DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-//            env.routeToMemoEditor(list.last)
-//          }
           return .none
           
         case .failure(let error):
           return .run { await $0(.throwError(error) )}
         }
+        
+      case .onTapDeleteTarget(let item):
+        let new = MemoEntity.Item(isChecked: !(item.isChecked ?? false), title: item.title, date: item.date, content: item.content)
+        state.fetchMemoList = state.fetchMemoList.map { $0.id != item.id ? $0 : new }
+        return .none
+        
+        
+      case .onTapDeleteList(let list):
+        state.isEditing.toggle()
+        return env.deleteList(list)
+          .cancellable(pageID: pageID, id: CancelID.requestDeleteList)
         
       case .throwError(let error):
         print(error)
@@ -65,6 +73,8 @@ extension MemoStore {
     }
     
     var fetchMemoList: [MemoEntity.Item]
+    
+    var isEditing: Bool = false
   }
 }
 
@@ -78,6 +88,9 @@ extension MemoStore {
     case routeToTabBarItem(String)
     case onTapMemoEditor
     
+    case onTapDeleteTarget(MemoEntity.Item)
+    case onTapDeleteList([MemoEntity.Item])
+    
     case fetchMemoList(Result<[MemoEntity.Item], CompositeErrorRepository>)
     
     case throwError(CompositeErrorRepository)
@@ -88,5 +101,6 @@ extension MemoStore {
   enum CancelID: Equatable, CaseIterable {
     case teardown
     case requestGetMemoList
+    case requestDeleteList
   }
 }

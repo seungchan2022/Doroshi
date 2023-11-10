@@ -5,12 +5,12 @@ import SwiftUI
 import Architecture
 
 struct MemoPage {
-
+  
   init(store: StoreOf<MemoStore>) {
     self.store = store
     viewStore = ViewStore(store, observe: { $0 })
   }
-
+  
   private let store: StoreOf<MemoStore>
   @ObservedObject private var viewStore: ViewStoreOf<MemoStore>
 }
@@ -36,10 +36,11 @@ extension MemoPage: View {
           DesignSystemNavigation(
             barItem: .init(
               moreActionList: [
-                .init(title: "삭제", action: {  }),
+                .init(title: viewStore.isEditing ? "완료" : "편집", action: { viewStore.send(.onTapDeleteList(viewStore.fetchMemoList)) }),
               ]),
             title: "메모 \(viewStore.fetchMemoList.count)개가\n있습니다.")
           {
+            // MARK: - 콘텐츠 뷰
             VStack(alignment: .leading) {
               Text("메모 목록")
                 .font(.system(size: 16, weight: .bold))
@@ -49,34 +50,37 @@ extension MemoPage: View {
               
               ForEach(viewStore.fetchMemoList) { item in
                 HStack {
-                
                   
                   VStack(alignment: .leading, spacing: 4) {
                     
-                    //                    if item.title != .none && ((item.title?.isEmpty) == nil) {
                     if let title = item.title, !title.isEmpty {
                       Text(item.title ?? "")
                         .font(.system(size: 16))
                     }
                     Text("\(Date(timeInterval: item.date).formattedDate)")
                       .font(.system(size: 12))
-                      .foregroundStyle(DesignSystemColor.palette(.gray(.lv300)).color)
+                      .foregroundStyle(DesignSystemColor.palette(.gray(.lv200)).color)
                   }
                   
                   Spacer()
                   
-                  Button(action: {  }) {
-                    DesignSystemIcon.unChecked.image
-                      .resizable()
-                      .frame(width: 25, height: 25)
-                      .foregroundStyle(DesignSystemColor.palette(.gray(.lv300)).color)
+                  
+                  if viewStore.isEditing {
+                    // 편집 모드일 때 각 항목 옆에 체크박스 표시
+                    Button(action: { viewStore.send(.onTapDeleteTarget(item)) }) {
+                      (item.isChecked ?? false ? DesignSystemIcon.checked : DesignSystemIcon.unChecked).image
+                        .resizable()
+                        .frame(width: 25, height: 25)
+                        .foregroundStyle(DesignSystemColor.palette(.gray(.lv200)).color)
+                    }
                   }
+
                 }
                 .frame(minHeight: 60)
                 .frame(maxWidth: .infinity)
-//                .onTapGesture {
-//                  viewStore.send(.editTodo(item))
-//                }
+                //                .onTapGesture {
+                //                  viewStore.send(.editTodo(item))
+                //                }
                 
                 Divider()
                   .background(DesignSystemColor.palette(.gray(.lv100)).color)
@@ -101,7 +105,7 @@ extension MemoPage: View {
             }
             .foregroundStyle(DesignSystemColor.palette(.gray(.lv400)).color)
           }
-      }
+        }
       }
       .overlay(alignment: .bottomTrailing) {
         Button(action: { viewStore.send(.onTapMemoEditor) }) {
