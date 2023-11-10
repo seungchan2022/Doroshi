@@ -9,8 +9,6 @@ protocol TodoEnvType {
   
   var todoList: () -> Effect<TodoStore.Action> { get }
   
-  var delete: (TodoEntity.Item) -> Effect<TodoStore.Action> { get }
-  
   var deleteList: ([TodoEntity.Item]) -> Effect<TodoStore.Action> { get }
   
   var editTodo: (TodoEntity.Item?) -> Void { get }
@@ -27,17 +25,6 @@ extension TodoEnvType {
           .receive(on: mainQueue)
           .map { .fetchTodoList(.success($0)) }
       }
-    }
-  }
-  
-  var delete: (TodoEntity.Item) -> Effect<TodoStore.Action> {
-    { target in
-        .publisher {
-          Just(target)
-            .map(useCaseGroup.todoUseCase.delete)
-            .receive(on: mainQueue)
-            .map { .fetchTodoList(.success($0)) }
-        }
     }
   }
   

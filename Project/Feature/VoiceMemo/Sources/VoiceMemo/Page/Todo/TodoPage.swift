@@ -13,6 +13,8 @@ struct TodoPage {
   
   private let store: StoreOf<TodoStore>
   @ObservedObject private var viewStore: ViewStoreOf<TodoStore>
+  
+  @State private var isCheckedItem: Bool = false
 }
 
 extension TodoPage {
@@ -37,9 +39,7 @@ extension TodoPage: View {
           DesignSystemNavigation(
             barItem: .init(
               moreActionList: [
-                .init(title: "선택된 것들 삭제", action: {
-                  viewStore.send(.onTapDeleteList(viewStore.fetchTodoList))
-                }),
+                .init(title: viewStore.isEditing ? "완료" : "편집", action: { viewStore.send(.onTapDeleteList(viewStore.fetchTodoList)) }),
               ]),
             title: "To do list \(viewStore.fetchTodoList.count)개가\n있습니다.")
           {
@@ -50,25 +50,25 @@ extension TodoPage: View {
               Divider()
                 .background(DesignSystemColor.palette(.gray(.lv100)).color)
               
-              
               ForEach(viewStore.fetchTodoList) { item in
                 HStack {
                   
-                  Button(action: { viewStore.send(.onTapChecked(item)) }) {
-                    // 체크박스 뷰를 렌더링
-                    Image(systemName: item.isChecked ? "checkmark.square" : "square")
-                      .resizable()
-                      .frame(width: 25, height: 25)
+                  if !viewStore.isEditing {
+                    Button(action: { isCheckedItem.toggle() }) {
+                      //                    (viewStore.isCheckedItem ? DesignSystemIcon.checked : DesignSystemIcon.unChecked).image
+                      Image(systemName: isCheckedItem ? "checkmark.rectangle" : "rectangle")
+                        .resizable()
+                        .frame(width: 25, height: 25)
+                        .foregroundStyle(DesignSystemColor.palette(.gray(.lv200)).color)
+                    }
                   }
-                  
-                  Text("\(String(item.isChecked))")
+//                  Text("\(String(item.isChecked ?? false))")
                   
                   VStack(alignment: .leading, spacing: 4) {
-                    //                    if item.title != .none && ((item.title?.isEmpty) == nil) {
                     if let title = item.title, !title.isEmpty {
                       Text(item.title ?? "")
                         .font(.system(size: 16))
-                        .strikethrough(item.isChecked, color: DesignSystemColor.palette(.gray(.lv400)).color)
+                        .strikethrough(isCheckedItem, color: DesignSystemColor.palette(.gray(.lv400)).color)
                     }
                     
                     Text("\(Date(timeInterval: item.date).formattedDate)")
@@ -77,11 +77,16 @@ extension TodoPage: View {
                   }
                   
                   Spacer()
-
-                  Button(action: { viewStore.send(.onTapDelete(item))
-                    print("tapped")}) {
-                      Text("삭제")
+                  
+                  if viewStore.isEditing {
+                    // 편집 모드일 때 각 항목 옆에 체크박스 표시
+                    Button(action: { viewStore.send(.onTapDeleteTarget(item)) }) {
+                      (item.isChecked ?? false ? DesignSystemIcon.checked : DesignSystemIcon.unChecked).image
+                        .resizable()
+                        .frame(width: 25, height: 25)
+                        .foregroundStyle(DesignSystemColor.palette(.gray(.lv200)).color)
                     }
+                  }
                 }
                 .frame(minHeight: 50)
                 .frame(maxWidth: .infinity)

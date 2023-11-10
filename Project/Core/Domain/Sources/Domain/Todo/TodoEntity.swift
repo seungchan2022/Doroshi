@@ -12,11 +12,11 @@ public struct TodoEntity {
 extension TodoEntity {
   public struct Item: Codable, Equatable, Identifiable {
     
-    public let isChecked: Bool
+    public let isChecked: Bool?
     public let title: String?
     public let date: Double
     
-    public init(isChecked: Bool, title: String?, date: Double) {
+    public init(isChecked: Bool?, title: String?, date: Double) {
       self.isChecked = isChecked
       self.title = title
       self.date = date

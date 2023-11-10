@@ -28,18 +28,8 @@ extension TodoUseCasePlatform: TodoUseCase {
     }
   }
   
-  
   public var edit: (TodoEntity.Item) -> TodoEntity.Item {
     { create($0) }
-  }
-  
-  public var delete: (TodoEntity.Item) -> [TodoEntity.Item] {
-    { target in
-      let currentItemList = client.getItem()
-      let newItemList = currentItemList.delete(target: target)
-      return client.savedItem(new: newItemList)
-      
-    }
   }
   
   public var get: () -> [TodoEntity.Item] {
@@ -78,12 +68,6 @@ extension [TodoEntity.Item] {
         !targetLiset.contains(where: { $0.id == item.id })
        }
     }
-  
-  // 단일 아이템 삭제
-  fileprivate func delete(target: TodoEntity.Item) -> Self {
-    self.filter { $0.id != target.id }
-  }
-  
   
   fileprivate func find(id: Double) -> TodoEntity.Item? {
     self.first(where: { $0.id == id })

@@ -30,7 +30,6 @@ extension TodoEditorEnvType {
 
 extension TodoEditorStore.State {
   fileprivate func serialized() -> TodoEntity.Item {
-//    .init(isChecked: .none, title: title, date: date.timeIntervalSince1970)
-    .init(isChecked: false, title: title, date: date.timeIntervalSince1970)
+    .init(isChecked: .none, title: title, date: date.timeIntervalSince1970)
   }
 }
