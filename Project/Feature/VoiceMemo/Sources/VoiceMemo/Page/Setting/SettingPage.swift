@@ -34,7 +34,8 @@ extension SettingPage: View {
             Text("To do")
               .font(.system(size: 14))
             
-            Text("0")
+//            Text("0")
+            Text("\(viewStore.fetchTodoList.count)")
               .font(.system(size: 30))
           }
           
@@ -44,7 +45,7 @@ extension SettingPage: View {
             Text("메모")
               .font(.system(size: 14))
             
-            Text("0")
+            Text("\(viewStore.fetchMemoList.count)")
               .font(.system(size: 30))
           }
           
@@ -138,6 +139,10 @@ extension SettingPage: View {
       TabNavigationComponent(
         viewState: tabNavigationComponeentViewState,
         tapAction: { viewStore.send(.routeToTabBarItem($0)) })
+    }
+    .onAppear {
+      viewStore.send(.getTodoList)
+      viewStore.send(.getMemoList)
     }
     .navigationTitle("")
     .navigationBarHidden(true)
