@@ -19,7 +19,7 @@ let package = Package(
     .package(path: "../Platform"),
     .package(
       url: "https://github.com/interactord/LinkNavigator",
-      branch: "param-refactor"),
+      .upToNextMajor(from: "1.0.2")),
     .package(
       url: "https://github.com/pointfreeco/swift-composable-architecture",
       .upToNextMajor(from: "1.2.0")),
