@@ -27,7 +27,7 @@ extension AudioMemoPage {
   }
   
   private var recordButtonViewState: RecordButton.ViewState {
-    .init(isPlaying: true)
+    .init(isRecording: viewStore.isRecording)
   }
 }
 
@@ -40,7 +40,7 @@ extension AudioMemoPage: View {
         .overlay(alignment: .bottomTrailing) {
           RecordButton(
             viewState: recordButtonViewState,
-            tapAction: { print($0) }
+            tapAction: { viewStore.send($0 ? .onTapRecordStop : .onTapRecordStart) }
           )
         }
       TabNavigationComponent(

@@ -32,6 +32,7 @@ extension VoiceRecordClient {
     Future<URL, CompositeErrorRepository> { [weak self] promise in
       guard let path = FileManager.default.makePath(id) else { return promise(.failure(.notFoundFilePath)) }
       
+      print("파일 주소: ", path.absoluteString)
       do {
         let audioRecorder = try AVAudioRecorder(url: path, settings: .default)
         audioRecorder.delegate = self
@@ -50,6 +51,7 @@ extension VoiceRecordClient {
     Future<Void, CompositeErrorRepository> { [weak self] promise in
       self?.audioRecorder?.stop()
       self?.audioRecorder = .none
+      promise(.success(Void()))
     }
     .eraseToAnyPublisher()
   }

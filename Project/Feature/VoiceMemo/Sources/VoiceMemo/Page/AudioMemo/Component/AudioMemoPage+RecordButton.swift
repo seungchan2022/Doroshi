@@ -45,7 +45,7 @@ extension RecordButton: View {
       Task {
         switch await requestPermission() {
         case true:
-          tapAction(viewState.isPlaying)
+          tapAction(viewState.isRecording)
         case false:
           isShowAlert = true
         }
@@ -53,7 +53,7 @@ extension RecordButton: View {
       
     }) {
       Circle()
-        .fill(.red)
+        .fill(viewState.isRecording ? .red : .green)
         .frame(width: 50, height: 50)
         .padding(.trailing, 30)
         .padding(.bottom, 40)
@@ -80,6 +80,6 @@ extension RecordButton: View {
 
 extension RecordButton {
   struct ViewState: Equatable {
-    let isPlaying: Bool
+    let isRecording: Bool
   }
 }
