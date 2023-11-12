@@ -8,13 +8,11 @@ struct TodoEditorRouteBuilder<RootNavigator: RootNavigatorType> {
 
     return .init(matchPath: matchPath) { navigator, item, diContainer -> RouteViewController? in
       guard let env: VoiceMemoEnvironmentUseable = diContainer.resolve() else { return .none }
-      let query: TodoEntity.Item? = item.decoded()
-      let mutation = query?.serialized()
       
 
       return WrappingController(matchPath: matchPath) {
         TodoEditorPage(store: .init(
-          initialState: TodoEditorStore.State(title: mutation?.title, date: mutation?.date),
+          initialState: TodoEditorStore.State(injectionItem: item.decoded()),
           reducer: {
             TodoEditorStore(env: TodoEditorEnvLive(
               useCaseGroup: env,
@@ -22,13 +20,5 @@ struct TodoEditorRouteBuilder<RootNavigator: RootNavigatorType> {
           }))
       }
     }
-  }
-}
-
-extension TodoEntity.Item {
-  fileprivate func serialized() -> TodoEditorStore.State {
-    .init(
-      title: title,
-      date: .init(timeIntervalSince1970: date))
   }
 }

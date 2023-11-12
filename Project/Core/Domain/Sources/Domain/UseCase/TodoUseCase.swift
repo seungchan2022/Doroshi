@@ -1,9 +1,9 @@
 import Foundation
+import Combine
 
 public protocol TodoUseCase {
-  var create: (TodoEntity.Item) -> TodoEntity.Item { get }
-  var deleteTargetList: ([TodoEntity.Item]) -> [TodoEntity.Item] { get }
-  var edit: (TodoEntity.Item) -> TodoEntity.Item { get }
-  var get: () -> [TodoEntity.Item] { get }
+  var createOrUpdate: (TodoEntity.Item) -> AnyPublisher<TodoEntity.Item, CompositeErrorRepository> { get }
+  var deleteTargetList: ([TodoEntity.Item]) -> AnyPublisher<[TodoEntity.Item], CompositeErrorRepository> { get }
+  var get: () -> AnyPublisher<[TodoEntity.Item], CompositeErrorRepository> { get }
 }
 

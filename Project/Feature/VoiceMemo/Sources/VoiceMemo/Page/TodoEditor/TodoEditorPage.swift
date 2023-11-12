@@ -17,10 +17,28 @@ struct TodoEditorPage {
 
 extension TodoEditorPage {
   private var title: String {
-    """
-    To do list를
-    추가해 보세요.
-    """
+    switch viewStore.mode {
+    case .create:
+      return """
+        To do list를
+        추가해 보세요.
+      """
+      
+    case .edit:
+      return """
+        To do list를
+        변경해 보세요.
+      """
+    }
+  }
+  
+  private var updateButtonTitle: String {
+    switch viewStore.mode {
+    case .create:
+      return "생성"
+    case .edit:
+      return "완료"
+    }
   }
   
   private var disPlayDate: String {
@@ -36,7 +54,7 @@ extension TodoEditorPage: View {
         barItem: .init(
           backAction: { viewStore.send(.onTapBack) },
           moreActionList: [
-            .init(title: "생성", action: { viewStore.send(.onTapCreate) })
+            .init(title: updateButtonTitle, action: { viewStore.send(.onTapUpdateDone) })
           ]),
         title: title)
       {

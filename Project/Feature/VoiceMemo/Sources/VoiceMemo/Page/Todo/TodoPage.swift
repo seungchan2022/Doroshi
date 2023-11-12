@@ -55,14 +55,12 @@ extension TodoPage: View {
                   
                   if !viewStore.isEditing {
                     Button(action: { isCheckedItem.toggle() }) {
-                      //                    (viewStore.isCheckedItem ? DesignSystemIcon.checked : DesignSystemIcon.unChecked).image
                       Image(systemName: isCheckedItem ? "checkmark.rectangle" : "rectangle")
                         .resizable()
                         .frame(width: 25, height: 25)
                         .foregroundStyle(DesignSystemColor.palette(.gray(.lv200)).color)
                     }
                   }
-//                  Text("\(String(item.isChecked ?? false))")
                   
                   VStack(alignment: .leading, spacing: 4) {
                     if let title = item.title, !title.isEmpty {
@@ -93,7 +91,7 @@ extension TodoPage: View {
                 
                 // 수정하기 수정
                 .onTapGesture {
-                  viewStore.send(.editTodo(item))
+                  viewStore.send(.onTapEdit(item))
                 }
                 
                 Divider()

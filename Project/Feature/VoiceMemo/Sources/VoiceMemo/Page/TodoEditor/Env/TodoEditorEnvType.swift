@@ -2,6 +2,7 @@ import Foundation
 import ComposableArchitecture
 import Domain
 import Combine
+import CombineExt
 
 protocol TodoEditorEnvType {
   var useCaseGroup: VoiceMemoEnvironmentUseable { get }
@@ -18,11 +19,10 @@ extension TodoEditorEnvType {
     { state in
         .publisher {
           Just(state.serialized())
-            .map(useCaseGroup.todoUseCase.create)
+            .flatMap(useCaseGroup.todoUseCase.createOrUpdate)
             .receive(on: mainQueue)
-            .map {
-              TodoEditorStore.Action.fetchCreate(.success($0))
-            }
+            .mapToResult()
+            .map(TodoEditorStore.Action.fetchCreate)
         }
     }
   }

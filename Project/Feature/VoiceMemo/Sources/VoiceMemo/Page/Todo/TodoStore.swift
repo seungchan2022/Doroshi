@@ -37,6 +37,11 @@ extension TodoStore: Reducer {
         env.routeToTodoEditor(.none)
         return .none
         
+      case .onTapEdit(let item):
+        env.routeToTodoEditor(item)
+        return .none
+
+        
       case .fetchTodoList(let result):
         switch result {
         case .success(let list):
@@ -46,11 +51,7 @@ extension TodoStore: Reducer {
         case .failure(let error):
           return .run { await $0(.throwError(error))}
         }
-        
-      case .onTapEdit:
-        // env에서 edit에 대한 로직 구현
-        return .none
-        
+
       case .onTapDeleteTarget(let item):
         let new = TodoEntity.Item(isChecked: !(item.isChecked ?? false), title: item.title, date: item.date)
         state.fetchTodoList = state.fetchTodoList.map { $0.id != item.id ? $0 : new }
@@ -60,11 +61,6 @@ extension TodoStore: Reducer {
         state.isEditing.toggle()
         return env.deleteList(list)
           .cancellable(pageID: pageID, id: CancelID.requestDeleteList)
-        
-      case .editTodo(let item):
-        env.editTodo(item)
-        
-        return .none
         
       case .throwError(let error):
         print(error)
@@ -95,14 +91,11 @@ extension TodoStore {
     case routeToTabBarItem(String)
     
     case onTapTodoEditor  // 투두 작성 버튼
-    
-    case onTapEdit  // 네비게이션 버튼
+    case onTapEdit(TodoEntity.Item)  // 네비게이션 버튼
     
     case onTapDeleteTarget(TodoEntity.Item)  // Item의 isChecked(entity) 토글
     case onTapDeleteList([TodoEntity.Item]) // 선택된 아이템들 삭제
     
-    
-    case editTodo(TodoEntity.Item)  // 해당 투두로 들어가는
     
     case fetchTodoList(Result<[TodoEntity.Item], CompositeErrorRepository>)
     
