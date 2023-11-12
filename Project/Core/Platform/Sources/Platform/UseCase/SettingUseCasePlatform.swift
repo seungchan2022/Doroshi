@@ -5,8 +5,8 @@ public struct SettingUseCasePlatform {
   
   public init() { }
   
-  let todoClient: TodoClient<[TodoEntity.Item]> = .init(key: "TodoList", defaultValue: [])
-  let memoClient: MemoClient<[MemoEntity.Item]> = .init(key: "MemoList", defaultValue: [])
+  let todoClient: StorageClient<[TodoEntity.Item]> = .init(type: .todo, defaultValue: [])
+  let memoClient: StorageClient<[MemoEntity.Item]> = .init(type: .memo, defaultValue: [])
 }
 
 extension SettingUseCasePlatform: SettingUseCase {

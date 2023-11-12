@@ -5,7 +5,7 @@ public struct MemoUseCasePlatform {
   
   public init() { }
   
-  let client: MemoClient<[MemoEntity.Item]> = .init(key: "MemoList", defaultValue: [])
+  let client: StorageClient<[MemoEntity.Item]> = .init(type: .memo, defaultValue: [])
 }
 
 extension MemoUseCasePlatform: MemoUseCase {

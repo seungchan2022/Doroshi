@@ -28,10 +28,7 @@ extension SettingEnvType {
           .map { .fetchTodoList(.success($0)) }
       }
     }
-    
-    
   }
-  
   
   var memoList: () -> Effect<SettingStore.Action> {
     {

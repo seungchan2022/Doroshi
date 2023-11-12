@@ -1,16 +1,20 @@
 import Foundation
 
-public struct TodoClient<T: Codable> {
-
-  init(key: String, defaultValue: T) {
-    self.key = key
+public struct StorageClient<T: Codable> {
+  
+  init(type: DimensionType, defaultValue: T) {
+    self.type = type
     self.defaultValue = defaultValue
   }
-
+  
   let userDefault = UserDefaults.standard
   let defaultValue: T
-  let key: String
-
+  let type: DimensionType
+  
+  private var key: String {
+    type.rawValue
+  }
+  
   func getItem() -> T {
     guard
       let data = userDefault.object(forKey: key) as? Data,
@@ -18,10 +22,10 @@ public struct TodoClient<T: Codable> {
     else {
       return savedItem(new: defaultValue)
     }
-
+    
     return retItem
   }
-
+  
   @discardableResult
   func savedItem(new: T) -> T {
     let data = try? JSONEncoder().encode(new)
@@ -30,3 +34,9 @@ public struct TodoClient<T: Codable> {
   }
 }
 
+extension StorageClient {
+  enum DimensionType: String, Equatable {
+    case todo = "TodoList"
+    case memo = "MemoList"
+  }
+}

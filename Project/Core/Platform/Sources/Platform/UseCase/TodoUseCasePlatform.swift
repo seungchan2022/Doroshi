@@ -6,7 +6,7 @@ public struct TodoUseCasePlatform {
   
   public init() { }
   
-  let client: TodoClient<[TodoEntity.Item]> = .init(key: "TodoList", defaultValue: [])
+  let client: StorageClient<[TodoEntity.Item]> = .init(type: .todo, defaultValue: [])
 }
 
 extension TodoUseCasePlatform: TodoUseCase {
