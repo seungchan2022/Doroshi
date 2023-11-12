@@ -10,6 +10,7 @@ struct AppSideEffect: DependencyType, VoiceMemoEnvironmentUseable {
   let todoUseCase: TodoUseCase
   let memoUseCase: MemoUseCase
   let settingUseCase: SettingUseCase
+  let voiceUseCase: VoiceUseCase
 }
 
 extension AppSideEffect {
@@ -17,6 +18,7 @@ extension AppSideEffect {
     .init(
       todoUseCase: TodoUseCasePlatform(),
       memoUseCase: MemoUseCasePlatform(),
-      settingUseCase: SettingUseCasePlatform())
+      settingUseCase: SettingUseCasePlatform(),
+      voiceUseCase: VoiceUseCasePlatform())
   }
 }

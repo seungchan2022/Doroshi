@@ -41,8 +41,6 @@ extension AudioMemoPage: View {
           RecordButton(
             viewState: recordButtonViewState,
             tapAction: { print($0) }
-//            permissionDeniedAction: { print("허용안함") }
-            
           )
         }
       TabNavigationComponent(
