@@ -112,6 +112,7 @@ var defaultInfoValue: [String: InfoPlist.Value] {
     "NSAppTransportSecurity": .dictionary([
       "NSAllowsArbitraryLoads": .boolean(true),
     ]),
+    "NSMicrophoneUsageDescription": "음성녹음할때 필요하니 수락하셔야 됩니다."
   ]
 }
 
