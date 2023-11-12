@@ -3,6 +3,8 @@ import ComposableArchitecture
 import Domain
 import Foundation
 
+// MARK: - TimerStore
+
 struct TimerStore {
 
   init(env: TimerEnvType) {
@@ -13,10 +15,12 @@ struct TimerStore {
   let env: TimerEnvType
 }
 
+// MARK: Reducer
+
 extension TimerStore: Reducer {
   var body: some ReducerOf<Self> {
     BindingReducer()
-    Reduce { state, action in
+    Reduce { _, action in
       switch action {
       case .binding:
         return .none
@@ -24,7 +28,7 @@ extension TimerStore: Reducer {
       case .teardown:
         return .concatenate(
           CancelID.allCases.map { .cancel(pageID: pageID, id: $0) })
-        
+
       case .routeToTabBarItem(let matchPath):
         env.routeToTabItem(matchPath)
         return .none
@@ -37,11 +41,18 @@ extension TimerStore: Reducer {
   }
 }
 
+// MARK: TimerStore.State
+
 extension TimerStore {
   struct State: Equatable {
 
+    @BindingState var hour = 0
+    @BindingState var minute = 0
+    @BindingState var second = 0
   }
 }
+
+// MARK: TimerStore.Action
 
 extension TimerStore {
   enum Action: Equatable, BindableAction {
@@ -49,10 +60,12 @@ extension TimerStore {
     case teardown
 
     case routeToTabBarItem(String)
-    
+
     case throwError(CompositeErrorRepository)
   }
 }
+
+// MARK: TimerStore.CancelID
 
 extension TimerStore {
   enum CancelID: Equatable, CaseIterable {

@@ -1,16 +1,18 @@
+import Architecture
 import ComposableArchitecture
 import DesignSystem
 import Domain
 import SwiftUI
-import Architecture
+
+// MARK: - MemoEditorPage
 
 struct MemoEditorPage {
-  
+
   init(store: StoreOf<MemoEditorStore>) {
     self.store = store
     viewStore = ViewStore(store, observe: { $0 })
   }
-  
+
   private let store: StoreOf<MemoEditorStore>
   @ObservedObject private var viewStore: ViewStoreOf<MemoEditorStore>
 }
@@ -21,6 +23,8 @@ extension MemoEditorPage {
   }
 }
 
+// MARK: View
+
 extension MemoEditorPage: View {
   var body: some View {
     VStack {
@@ -28,7 +32,7 @@ extension MemoEditorPage: View {
         barItem: .init(
           backAction: { viewStore.send(.onTapBack) },
           moreActionList: [
-            .init(title: "생성", action: { viewStore.send(.onTapCreate) })
+            .init(title: "생성", action: { viewStore.send(.onTapCreate) }),
           ]),
         title: title)
       {
@@ -37,15 +41,15 @@ extension MemoEditorPage: View {
             "",
             text: viewStore.$title,
             prompt: .init("제목을 입력하세요."))
-          .font(.system(size: 30))
-          
+            .font(.system(size: 30))
+
           Divider()
             .background(DesignSystemColor.palette(.gray(.lv100)).color)
-          
+
           ZStack(alignment: .topLeading) {
             TextEditor(text: viewStore.$content)
               .font(.system(size: 20))
-            
+
             if viewStore.content.isEmpty {
               Text("메모를 입력하세요.")
                 .font(.system(size: 16))
@@ -57,10 +61,8 @@ extension MemoEditorPage: View {
         }
         .padding(.horizontal, 30)
       }
-      
     }
     .navigationTitle("")
     .navigationBarHidden(true)
-    
   }
 }

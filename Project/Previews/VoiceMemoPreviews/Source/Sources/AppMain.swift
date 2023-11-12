@@ -1,12 +1,12 @@
 import Architecture
-import SwiftUI
 import LinkNavigator
+import SwiftUI
 
 @main
 struct AppMain: App {
-  
+
   @State private var viewModel = AppMainViewModel()
-  
+
   var body: some Scene {
     WindowGroup {
       LinkNavigationView(

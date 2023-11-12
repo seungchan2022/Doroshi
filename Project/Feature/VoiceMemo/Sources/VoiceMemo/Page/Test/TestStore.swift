@@ -3,6 +3,8 @@ import ComposableArchitecture
 import Domain
 import Foundation
 
+// MARK: - TestStore
+
 struct TestStore {
 
   init(env: TestEnvType) {
@@ -13,10 +15,12 @@ struct TestStore {
   let env: TestEnvType
 }
 
+// MARK: Reducer
+
 extension TestStore: Reducer {
   var body: some ReducerOf<Self> {
     BindingReducer()
-    Reduce { state, action in
+    Reduce { _, action in
       switch action {
       case .binding:
         return .none
@@ -33,11 +37,13 @@ extension TestStore: Reducer {
   }
 }
 
-extension TestStore {
-  struct State: Equatable {
+// MARK: TestStore.State
 
-  }
+extension TestStore {
+  struct State: Equatable { }
 }
+
+// MARK: TestStore.Action
 
 extension TestStore {
   enum Action: Equatable, BindableAction {
@@ -47,6 +53,8 @@ extension TestStore {
     case throwError(CompositeErrorRepository)
   }
 }
+
+// MARK: TestStore.CancelID
 
 extension TestStore {
   enum CancelID: Equatable, CaseIterable {

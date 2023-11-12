@@ -1,6 +1,8 @@
 import Architecture
-import LinkNavigator
 import Domain
+import LinkNavigator
+
+// MARK: - MemoEditorRouteBuilder
 
 struct MemoEditorRouteBuilder<RootNavigator: RootNavigatorType> {
   static func generate() -> RouteBuilderOf<RootNavigator> {
@@ -10,7 +12,7 @@ struct MemoEditorRouteBuilder<RootNavigator: RootNavigatorType> {
       guard let env: VoiceMemoEnvironmentUseable = diContainer.resolve() else { return .none }
       let query: MemoEntity.Item? = item.decoded()
       let mutation = query?.serialized()
-      
+
       return WrappingController(matchPath: matchPath) {
         MemoEditorPage(store: .init(
           initialState: MemoEditorStore.State(title: mutation?.title, date: mutation?.date, content: mutation?.content),

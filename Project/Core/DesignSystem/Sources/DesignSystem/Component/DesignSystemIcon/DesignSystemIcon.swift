@@ -14,6 +14,8 @@ public enum DesignSystemIcon {
   case unChecked
   case checked
 
+  // MARK: Public
+
   public var image: Image {
     var image: Image {
       switch self {
@@ -33,6 +35,5 @@ public enum DesignSystemIcon {
 
     return image.renderingMode(.template)
   }
-
 
 }

@@ -1,8 +1,10 @@
-import Foundation
 import Domain
-import VoiceMemo
-import Platform
+import Foundation
 import LinkNavigator
+import Platform
+import VoiceMemo
+
+// MARK: - AppSideEffect
 
 struct AppSideEffect: DependencyType, VoiceMemoEnvironmentUseable {
   let todoUseCase: TodoUseCase

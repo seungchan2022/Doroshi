@@ -1,20 +1,22 @@
 import Foundation
 
+// MARK: - StorageClient
+
 public struct StorageClient<T: Codable> {
-  
+
+  // MARK: Lifecycle
+
   init(type: DimensionType, defaultValue: T) {
     self.type = type
     self.defaultValue = defaultValue
   }
-  
+
+  // MARK: Internal
+
   let userDefault = UserDefaults.standard
   let defaultValue: T
   let type: DimensionType
-  
-  private var key: String {
-    type.rawValue
-  }
-  
+
   func getItem() -> T {
     guard
       let data = userDefault.object(forKey: key) as? Data,
@@ -22,17 +24,25 @@ public struct StorageClient<T: Codable> {
     else {
       return savedItem(new: defaultValue)
     }
-    
+
     return retItem
   }
-  
+
   @discardableResult
   func savedItem(new: T) -> T {
     let data = try? JSONEncoder().encode(new)
     userDefault.set(data, forKey: key)
     return new
   }
+
+  // MARK: Private
+
+  private var key: String {
+    type.rawValue
+  }
 }
+
+// MARK: StorageClient.DimensionType
 
 extension StorageClient {
   enum DimensionType: String, Equatable {

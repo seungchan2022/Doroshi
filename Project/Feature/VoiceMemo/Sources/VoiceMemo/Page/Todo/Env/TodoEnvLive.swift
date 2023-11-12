@@ -4,12 +4,16 @@ import Domain
 import Foundation
 import LinkNavigator
 
+// MARK: - TodoEnvLive
+
 struct TodoEnvLive {
-  
+
   let useCaseGroup: VoiceMemoEnvironmentUseable
   let mainQueue: AnySchedulerOf<DispatchQueue> = .main
   let navigator: RootNavigatorType
 }
+
+// MARK: TodoEnvType
 
 extension TodoEnvLive: TodoEnvType {
   var routeToTabItem: (String) -> Void {
@@ -18,7 +22,7 @@ extension TodoEnvLive: TodoEnvType {
       navigator.replace(linkItem: .init(path: path), isAnimated: false)
     }
   }
-  
+
   // Todo 작성
   var routeToTodoEditor: (TodoEntity.Item?) -> Void {
     { item in

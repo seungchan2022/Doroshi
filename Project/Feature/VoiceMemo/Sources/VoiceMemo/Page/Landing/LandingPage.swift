@@ -3,6 +3,8 @@ import DesignSystem
 import Domain
 import SwiftUI
 
+// MARK: - LandingPage
+
 struct LandingPage {
 
   init(store: StoreOf<LandingStore>) {
@@ -14,8 +16,9 @@ struct LandingPage {
   @ObservedObject private var viewStore: ViewStoreOf<LandingStore>
 }
 
-extension LandingPage {
-}
+extension LandingPage { }
+
+// MARK: View
 
 extension LandingPage: View {
   var body: some View {

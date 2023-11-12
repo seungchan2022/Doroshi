@@ -1,15 +1,19 @@
 import Foundation
 
+// MARK: - CompositeErrorRepository
+
 public enum CompositeErrorRepository: Error {
 
   public var message: String {
-    return ""
+    ""
   }
 
 }
 
+// MARK: Equatable
+
 extension CompositeErrorRepository: Equatable {
   public static func == (lhs: Self, rhs: Self) -> Bool {
-    return lhs.message == rhs.message
+    lhs.message == rhs.message
   }
 }

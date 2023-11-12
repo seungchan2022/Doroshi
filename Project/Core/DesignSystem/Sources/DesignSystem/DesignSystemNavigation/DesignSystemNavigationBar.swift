@@ -1,16 +1,18 @@
 import SwiftUI
 
+// MARK: - DesignSystemNavigationBar
+
 public struct DesignSystemNavigationBar {
 
   let backAction: (() -> Void)?
-  let  moreActionList: [MoreAction]
+  let moreActionList: [MoreAction]
 
   public init(
     backAction: (() -> Void)? = .none,
-     moreActionList: [MoreAction] = [])
+    moreActionList: [MoreAction] = [])
   {
     self.backAction = backAction
-    self.moreActionList =  moreActionList
+    self.moreActionList = moreActionList
   }
 }
 
@@ -21,6 +23,8 @@ extension DesignSystemNavigationBar {
 
   var maxHeight: Double { 44 }
 }
+
+// MARK: View
 
 extension DesignSystemNavigationBar: View {
 
@@ -43,7 +47,7 @@ extension DesignSystemNavigationBar: View {
       }
       .overlay(alignment: .trailing) {
         HStack(spacing: 8) {
-          ForEach( moreActionList, id: \.id) { item in
+          ForEach(moreActionList, id: \.id) { item in
             Button(action: item.action) {
               Text(item.title)
                 .font(.system(size: 14, weight: .regular, design: .default))
@@ -57,15 +61,16 @@ extension DesignSystemNavigationBar: View {
       }
       .frame(maxWidth: .infinity)
       .frame(height: maxHeight)
-
   }
 }
+
+// MARK: DesignSystemNavigationBar.MoreAction
 
 extension DesignSystemNavigationBar {
   public struct MoreAction: Equatable, Identifiable {
     let title: String
     let action: () -> Void
-    
+
     public init(title: String, action: @escaping () -> Void) {
       self.title = title
       self.action = action
@@ -79,12 +84,11 @@ extension DesignSystemNavigationBar {
   }
 }
 
-
 #Preview(body: {
   VStack {
     DesignSystemNavigationBar(
       backAction: { print("hello") },
-       moreActionList: [
+      moreActionList: [
         .init(title: "Create", action: { }),
         .init(title: "Done", action: { }),
       ])

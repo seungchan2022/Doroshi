@@ -1,6 +1,8 @@
 import Architecture
 import LinkNavigator
 
+// MARK: - VoiceMemoRouteBuilderGroup
+
 public struct VoiceMemoRouteBuilderGroup<RootNavigator: RootNavigatorType> {
   public init() { }
 }

@@ -4,12 +4,14 @@ import Domain
 import Foundation
 import LinkNavigator
 
+// MARK: - TestEnvLive
+
 struct TestEnvLive {
 
   let useCaseGroup: VoiceMemoEnvironmentUseable
   let mainQueue: AnySchedulerOf<DispatchQueue> = .main
 }
 
-extension TestEnvLive: TestEnvType {
+// MARK: TestEnvType
 
-}
+extension TestEnvLive: TestEnvType { }

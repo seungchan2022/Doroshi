@@ -3,6 +3,8 @@ import ComposableArchitecture
 import Domain
 import Foundation
 
+// MARK: - AudioMemoStore
+
 struct AudioMemoStore {
 
   init(env: AudioMemoEnvType) {
@@ -13,10 +15,12 @@ struct AudioMemoStore {
   let env: AudioMemoEnvType
 }
 
+// MARK: Reducer
+
 extension AudioMemoStore: Reducer {
   var body: some ReducerOf<Self> {
     BindingReducer()
-    Reduce { state, action in
+    Reduce { _, action in
       switch action {
       case .binding:
         return .none
@@ -24,11 +28,11 @@ extension AudioMemoStore: Reducer {
       case .teardown:
         return .concatenate(
           CancelID.allCases.map { .cancel(pageID: pageID, id: $0) })
-        
+
       case .routeToTabBarItem(let matchPath):
         env.routeToTabItem(matchPath)
         return .none
-        
+
       case .throwError(let error):
         print(error)
         return .none
@@ -37,22 +41,26 @@ extension AudioMemoStore: Reducer {
   }
 }
 
-extension AudioMemoStore {
-  struct State: Equatable {
+// MARK: AudioMemoStore.State
 
-  }
+extension AudioMemoStore {
+  struct State: Equatable { }
 }
+
+// MARK: AudioMemoStore.Action
 
 extension AudioMemoStore {
   enum Action: Equatable, BindableAction {
     case binding(BindingAction<State>)
     case teardown
-    
+
     case routeToTabBarItem(String)
 
     case throwError(CompositeErrorRepository)
   }
 }
+
+// MARK: AudioMemoStore.CancelID
 
 extension AudioMemoStore {
   enum CancelID: Equatable, CaseIterable {

@@ -1,6 +1,8 @@
 import Foundation
 import SwiftUI
 
+// MARK: - DesignSystemColor
+
 public enum DesignSystemColor: Equatable, CaseIterable {
   case background(BackgroundChip)
   case label(LabelChip)
@@ -8,15 +10,17 @@ public enum DesignSystemColor: Equatable, CaseIterable {
   case system(SystemChip)
   case tint(TintChip)
 
+  // MARK: Public
+
   public static var allCases: [Self] {
     BackgroundChip.allCases.map(Self.background)
-    + LabelChip.allCases.map(Self.label)
-    + PaletteChip.allCases.map(Self.palette)
-    + SystemChip.allCases.map(Self.system)
-    + TintChip.allCases.map(Self.tint)
+      + LabelChip.allCases.map(Self.label)
+      + PaletteChip.allCases.map(Self.palette)
+      + SystemChip.allCases.map(Self.system)
+      + TintChip.allCases.map(Self.tint)
   }
 
- public var color: Color {
+  public var color: Color {
     switch self {
     case .background(let chip): chip.color
     case .label(let chip): chip.color
@@ -59,15 +63,7 @@ extension DesignSystemColor {
 
     case gray(GrayChip)
 
-    public static var allCases: [DesignSystemColor.PaletteChip] {
-      PaletteChip.GrayChip.allCases.map(PaletteChip.gray)
-    }
-
-    var color: Color {
-      switch self {
-      case .gray(let chip): chip.color
-      }
-    }
+    // MARK: Public
 
     public enum GrayChip: Equatable, CaseIterable {
       case lv100
@@ -86,6 +82,19 @@ extension DesignSystemColor {
         }
       }
     }
+
+    public static var allCases: [DesignSystemColor.PaletteChip] {
+      PaletteChip.GrayChip.allCases.map(PaletteChip.gray)
+    }
+
+    // MARK: Internal
+
+    var color: Color {
+      switch self {
+      case .gray(let chip): chip.color
+      }
+    }
+
   }
 
   public enum SystemChip: Equatable, CaseIterable {

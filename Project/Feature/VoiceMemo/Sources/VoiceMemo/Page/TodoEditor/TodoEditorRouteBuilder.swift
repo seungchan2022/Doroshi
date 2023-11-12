@@ -1,6 +1,6 @@
 import Architecture
-import LinkNavigator
 import Domain
+import LinkNavigator
 
 struct TodoEditorRouteBuilder<RootNavigator: RootNavigatorType> {
   static func generate() -> RouteBuilderOf<RootNavigator> {
@@ -8,7 +8,6 @@ struct TodoEditorRouteBuilder<RootNavigator: RootNavigatorType> {
 
     return .init(matchPath: matchPath) { navigator, item, diContainer -> RouteViewController? in
       guard let env: VoiceMemoEnvironmentUseable = diContainer.resolve() else { return .none }
-      
 
       return WrappingController(matchPath: matchPath) {
         TodoEditorPage(store: .init(

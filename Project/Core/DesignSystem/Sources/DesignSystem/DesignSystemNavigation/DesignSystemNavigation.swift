@@ -1,5 +1,7 @@
 import SwiftUI
 
+// MARK: - DesignSystemNavigation
+
 public struct DesignSystemNavigation<Content: View> {
   let barItem: DesignSystemNavigationBar?
   let title: String?
@@ -21,6 +23,8 @@ extension DesignSystemNavigation {
     barItem == nil ? 48 : 32
   }
 }
+
+// MARK: View
 
 extension DesignSystemNavigation: View {
   public var body: some View {
@@ -53,20 +57,22 @@ extension DesignSystemNavigation: View {
 #Preview("Case1") {
   DesignSystemNavigation(
     barItem: .init(
-      backAction: {},
-       moreActionList: [
-        .init(title: "more", action: {})
+      backAction: { },
+      moreActionList: [
+        .init(title: "more", action: { }),
       ]),
-    title: "메모장") {
+    title: "메모장")
+  {
 //      Text("asdjkasldjkasda")
 //      Text("asdjkasldjkasda")
-    }
+  }
 }
 
 #Preview("Case2") {
   DesignSystemNavigation(
-    title: "메모장") {
+    title: "메모장")
+  {
 //      Text("asdjkasldjkasda")
 //      Text("asdjkasldjkasda")
-    }
+  }
 }

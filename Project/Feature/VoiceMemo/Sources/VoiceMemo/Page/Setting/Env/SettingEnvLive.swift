@@ -4,6 +4,8 @@ import Domain
 import Foundation
 import LinkNavigator
 
+// MARK: - SettingEnvLive
+
 struct SettingEnvLive {
 
   let useCaseGroup: VoiceMemoEnvironmentUseable
@@ -11,15 +13,16 @@ struct SettingEnvLive {
   let navigator: RootNavigatorType
 }
 
+// MARK: SettingEnvType
+
 extension SettingEnvLive: SettingEnvType {
   var routeToTabItem: (String) -> Void {
     { path in
       guard path != Link.VoiceMemo.Path.setting.rawValue else { return }
       navigator.replace(linkItem: .init(path: path), isAnimated: false)
-      
     }
   }
-  
+
   var routeToTodo: () -> Void {
     {
       navigator.backOrNext(
@@ -27,7 +30,7 @@ extension SettingEnvLive: SettingEnvType {
         isAnimated: false)
     }
   }
-  
+
   var routeToMemo: () -> Void {
     {
       navigator.backOrNext(
@@ -35,7 +38,7 @@ extension SettingEnvLive: SettingEnvType {
         isAnimated: false)
     }
   }
-  
+
   var routeToAudioMemo: () -> Void {
     {
       navigator.backOrNext(
@@ -43,7 +46,7 @@ extension SettingEnvLive: SettingEnvType {
         isAnimated: false)
     }
   }
-  
+
   var routeToTimer: () -> Void {
     {
       navigator.backOrNext(

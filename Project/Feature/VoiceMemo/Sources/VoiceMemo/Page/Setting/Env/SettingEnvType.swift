@@ -1,23 +1,24 @@
-import Foundation
+import Combine
 import ComposableArchitecture
 import Domain
-import Combine
+import Foundation
+
+// MARK: - SettingEnvType
 
 protocol SettingEnvType {
   var useCaseGroup: VoiceMemoEnvironmentUseable { get }
   var mainQueue: AnySchedulerOf<DispatchQueue> { get }
-  
+
   var todoList: () -> Effect<SettingStore.Action> { get }
   var memoList: () -> Effect<SettingStore.Action> { get }
-  
+
   var routeToTabItem: (String) -> Void { get }
-  
+
   var routeToTodo: () -> Void { get }
   var routeToMemo: () -> Void { get }
   var routeToAudioMemo: () -> Void { get }
   var routeToTimer: () -> Void { get }
 }
-
 
 extension SettingEnvType {
   var todoList: () -> Effect<SettingStore.Action> {
@@ -29,7 +30,7 @@ extension SettingEnvType {
       }
     }
   }
-  
+
   var memoList: () -> Effect<SettingStore.Action> {
     {
       .publisher {

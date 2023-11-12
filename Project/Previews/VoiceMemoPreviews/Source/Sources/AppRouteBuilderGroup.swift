@@ -1,5 +1,5 @@
-import Foundation
 import Architecture
+import Foundation
 import LinkNavigator
 import VoiceMemo
 

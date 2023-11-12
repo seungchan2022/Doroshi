@@ -3,6 +3,8 @@ import DesignSystem
 import Domain
 import SwiftUI
 
+// MARK: - TestPage
+
 struct TestPage {
 
   init(store: StoreOf<TestStore>) {
@@ -14,8 +16,9 @@ struct TestPage {
   @ObservedObject private var viewStore: ViewStoreOf<TestStore>
 }
 
-extension TestPage {
-}
+extension TestPage { }
+
+// MARK: View
 
 extension TestPage: View {
   var body: some View {

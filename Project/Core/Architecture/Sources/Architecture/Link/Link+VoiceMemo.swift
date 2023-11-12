@@ -1,8 +1,12 @@
 import Foundation
 
+// MARK: - Link.VoiceMemo
+
 extension Link {
   public enum VoiceMemo { }
 }
+
+// MARK: - Link.VoiceMemo.Path
 
 extension Link.VoiceMemo {
   public enum Path: String, Equatable {

@@ -1,16 +1,20 @@
-import Foundation
 import Domain
-import VoiceMemo
+import Foundation
 import LinkNavigator
+import VoiceMemo
 
 @Observable
 final class AppMainViewModel {
-  
-  let linkNavigator: SingleLinkNavigator
-  
+
+  // MARK: Lifecycle
+
   init() {
     linkNavigator = .init(
       routeBuilderItemList: AppRouteBuilderGroup().release,
       dependency: AppSideEffect.build())
   }
+
+  // MARK: Internal
+
+  let linkNavigator: SingleLinkNavigator
 }
