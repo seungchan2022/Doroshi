@@ -40,6 +40,10 @@ extension MemoStore: Reducer {
       case .onTapMemoEditor:
         env.routeToMemoEditor(.none)
         return .none
+        
+      case .onTapEdit(let item):
+        env.routeToMemoEditor(item)
+        return .none
 
       case .fetchMemoList(let result):
         switch result {
@@ -97,7 +101,9 @@ extension MemoStore {
     case getMemoList
 
     case routeToTabBarItem(String)
+    
     case onTapMemoEditor
+    case onTapEdit(MemoEntity.Item)
 
     case onTapDeleteTarget(MemoEntity.Item)
     case onTapDeleteList([MemoEntity.Item])

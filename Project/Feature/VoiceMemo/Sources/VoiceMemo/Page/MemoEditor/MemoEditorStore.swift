@@ -33,7 +33,7 @@ extension MemoEditorStore: Reducer {
         env.routeToBack()
         return .none
 
-      case .onTapCreate:
+      case .onTapUpdateDone:
         return env.save(state)
           .cancellable(pageID: pageID, id: CancelID.requestSaveItem)
 
@@ -60,15 +60,22 @@ extension MemoEditorStore: Reducer {
 extension MemoEditorStore {
   struct State: Equatable {
 
-    init(title: String?, date: Date?, content: String?) {
-      self.title = title ?? ""
-      self.date = date ?? .now
-      self.content = content ?? ""
+    init(injectionItem: MemoEntity.Item?) {
+      title = injectionItem?.title ?? ""
+      date = {
+        guard let date = injectionItem?.date else { return .now }
+        return .init(timeIntervalSince1970: date)
+      }()
+      content = injectionItem?.content ?? ""
+      
+      mode = injectionItem == .none ? .create : .edit
     }
 
     @BindingState var title = ""
     @BindingState var date = Date.now
     @BindingState var content = ""
+    
+    let mode: Mode
   }
 }
 
@@ -80,7 +87,7 @@ extension MemoEditorStore {
     case teardown
 
     case onTapBack
-    case onTapCreate
+    case onTapUpdateDone
 
     case fetchCreate(Result<MemoEntity.Item, CompositeErrorRepository>)
     case throwError(CompositeErrorRepository)
@@ -93,5 +100,10 @@ extension MemoEditorStore {
   enum CancelID: Equatable, CaseIterable {
     case teardown
     case requestSaveItem
+  }
+  
+  enum Mode: Equatable {
+    case create
+    case edit
   }
 }

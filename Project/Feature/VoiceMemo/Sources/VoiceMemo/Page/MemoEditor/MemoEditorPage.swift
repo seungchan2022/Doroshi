@@ -21,6 +21,15 @@ extension MemoEditorPage {
   private var title: String {
     ""
   }
+  
+  private var updateButtonTitle: String {
+    switch viewStore.mode {
+    case .create: 
+      "생성"
+    case .edit:
+      "완료"
+    }
+  }
 }
 
 // MARK: View
@@ -32,7 +41,7 @@ extension MemoEditorPage: View {
         barItem: .init(
           backAction: { viewStore.send(.onTapBack) },
           moreActionList: [
-            .init(title: "생성", action: { viewStore.send(.onTapCreate) }),
+            .init(title: updateButtonTitle, action: { viewStore.send(.onTapUpdateDone) }),
           ]),
         title: title)
       {
@@ -46,18 +55,17 @@ extension MemoEditorPage: View {
           Divider()
             .background(DesignSystemColor.palette(.gray(.lv100)).color)
 
-          ZStack(alignment: .topLeading) {
             TextEditor(text: viewStore.$content)
               .font(.system(size: 20))
-
-            if viewStore.content.isEmpty {
-              Text("메모를 입력하세요.")
-                .font(.system(size: 16))
-                .foregroundStyle(DesignSystemColor.palette(.gray(.lv250)).color)
-                .padding(.top, 8)
-                .padding(.leading, 5)
-            }
-          }
+              .overlay {
+                if viewStore.content.isEmpty {
+                  Text("메모를 입력하세요.")
+                    .font(.system(size: 16))
+                    .foregroundStyle(DesignSystemColor.palette(.gray(.lv250)).color)
+                    .padding(.top, 8)
+                    .padding(.leading, 5)
+                }
+              }
         }
         .padding(.horizontal, 30)
       }

@@ -1,8 +1,8 @@
 import Foundation
+import Combine
 
 public protocol MemoUseCase {
-  var create: (MemoEntity.Item) -> MemoEntity.Item { get }
-  var deleteTargetList: ([MemoEntity.Item]) -> [MemoEntity.Item] { get }
-  var edit: (MemoEntity.Item) -> MemoEntity.Item { get }
-  var get: () -> [MemoEntity.Item] { get }
+  var createOrUpdate: (MemoEntity.Item) -> AnyPublisher<MemoEntity.Item, CompositeErrorRepository> { get }
+  var deleteTargetList: ([MemoEntity.Item]) -> AnyPublisher<[MemoEntity.Item], CompositeErrorRepository> { get }
+  var get: () -> AnyPublisher<[MemoEntity.Item], CompositeErrorRepository> { get }
 }

@@ -1,43 +1,50 @@
 import Domain
 import Foundation
+import Combine
 
 // MARK: - MemoUseCasePlatform
 
 public struct MemoUseCasePlatform {
-
+  
   public init() { }
-
+  
   let client: StorageClient<[MemoEntity.Item]> = .init(type: .memo, defaultValue: [])
 }
 
 // MARK: MemoUseCase
 
 extension MemoUseCasePlatform: MemoUseCase {
-
-  public var create: (MemoEntity.Item) -> MemoEntity.Item {
+  
+  public var createOrUpdate: (MemoEntity.Item) -> AnyPublisher<MemoEntity.Item, CompositeErrorRepository> {
     { new in
-      let currentItemList = client.getItem()
-      let newItemList = currentItemList.add(new: new).sorted(by: <)
-      client.savedItem(new: newItemList)
-      return new
+      Future<MemoEntity.Item, CompositeErrorRepository> { promise in
+        let currentItemList = client.getItem()
+        let newItemList = currentItemList.add(new: new).sorted(by: <)
+        client.savedItem(new: newItemList)
+        return promise(.success(new))
+      }
+      .eraseToAnyPublisher()
     }
   }
-
-  public var deleteTargetList: ([MemoEntity.Item]) -> [MemoEntity.Item] {
+  
+  public var deleteTargetList: ([MemoEntity.Item]) -> AnyPublisher<[MemoEntity.Item], CompositeErrorRepository> {
     { targetList in
-      let currentItemList = client.getItem()
-      let newItemList = currentItemList.delete(targetList: targetList)
-      return client.savedItem(new: newItemList)
+      Future<[MemoEntity.Item], CompositeErrorRepository> { promise in
+        let currentItemList = client.getItem()
+        let newItemList = currentItemList.delete(targetList: targetList)
+        return promise(.success(client.savedItem(new: newItemList)))
+      }
+      .eraseToAnyPublisher()
     }
   }
-
-  public var edit: (MemoEntity.Item) -> MemoEntity.Item {
-    { create($0) }
-  }
-
-  public var get: () -> [MemoEntity.Item] {
+  
+  
+  public var get: () -> AnyPublisher<[MemoEntity.Item], CompositeErrorRepository> {
     {
-      client.getItem()
+      Future<[MemoEntity.Item], CompositeErrorRepository> { promise in
+        promise(.success(client.getItem()))
+      }
+      .eraseToAnyPublisher()
     }
   }
 }
@@ -46,7 +53,7 @@ extension [MemoEntity.Item] {
   fileprivate func add(new: MemoEntity.Item) -> Self {
     self.filter { $0.id != new.id } + [new]
   }
-
+  
   fileprivate func delete(targetList: [MemoEntity.Item]) -> Self {
     self.filter { item in
       !targetList.contains(where: { $0.id == item.id })

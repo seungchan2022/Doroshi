@@ -7,12 +7,12 @@ import SwiftUI
 // MARK: - MemoPage
 
 struct MemoPage {
-
+  
   init(store: StoreOf<MemoStore>) {
     self.store = store
     viewStore = ViewStore(store, observe: { $0 })
   }
-
+  
   private let store: StoreOf<MemoStore>
   @ObservedObject private var viewStore: ViewStoreOf<MemoStore>
 }
@@ -21,7 +21,7 @@ extension MemoPage {
   private var tabNavigationComponeentViewState: TabNavigationComponent.ViewState {
     .init(activeMatchPath: Link.VoiceMemo.Path.memo.rawValue)
   }
-
+  
   private var title: String {
     """
     메모를
@@ -50,10 +50,10 @@ extension MemoPage: View {
             VStack(alignment: .leading) {
               Text("메모 목록")
                 .font(.system(size: 16, weight: .bold))
-
+              
               Divider()
                 .background(DesignSystemColor.palette(.gray(.lv100)).color)
-
+              
               ForEach(viewStore.fetchMemoList) { item in
                 HStack {
                   VStack(alignment: .leading, spacing: 4) {
@@ -65,9 +65,9 @@ extension MemoPage: View {
                       .font(.system(size: 12))
                       .foregroundStyle(DesignSystemColor.palette(.gray(.lv200)).color)
                   }
-
+                  
                   Spacer()
-
+                  
                   if viewStore.isEditing {
                     // 편집 모드일 때 각 항목 옆에 체크박스 표시
                     Button(action: { viewStore.send(.onTapDeleteTarget(item)) }) {
@@ -80,10 +80,10 @@ extension MemoPage: View {
                 }
                 .frame(minHeight: 60)
                 .frame(maxWidth: .infinity)
-                //                .onTapGesture {
-                //                  viewStore.send(.editTodo(item))
-                //                }
-
+                .onTapGesture {
+                  viewStore.send(.onTapEdit(item))
+                }
+                
                 Divider()
                   .background(DesignSystemColor.palette(.gray(.lv100)).color)
               }
@@ -97,7 +97,7 @@ extension MemoPage: View {
               .frame(width: 20, height: 20)
               .foregroundStyle(DesignSystemColor.palette(.gray(.lv400)).color)
               .padding(.top, 180)
-
+            
             VStack(spacing: 8) {
               Text("\"퇴근 9시간 전 메모\"")
               Text("\"기획서 작성 후 퇴근하기 메모\"")
@@ -136,15 +136,15 @@ extension MemoPage: View {
 }
 
 extension Date {
-
+  
   // MARK: Lifecycle
-
+  
   fileprivate init(timeInterval: Double) {
     self.init(timeIntervalSince1970: timeInterval)
   }
-
+  
   // MARK: Fileprivate
-
+  
   fileprivate var formattedDate: String {
     if isDateToday {
       return "오늘 "
@@ -155,9 +155,9 @@ extension Date {
       return dateFormatter.string(from: self)
     }
   }
-
+  
   // MARK: Private
-
+  
   private var isDateToday: Bool {
     Calendar.current.isDateInToday(self)
   }

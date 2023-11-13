@@ -10,12 +10,10 @@ struct MemoEditorRouteBuilder<RootNavigator: RootNavigatorType> {
 
     return .init(matchPath: matchPath) { navigator, item, diContainer -> RouteViewController? in
       guard let env: VoiceMemoEnvironmentUseable = diContainer.resolve() else { return .none }
-      let query: MemoEntity.Item? = item.decoded()
-      let mutation = query?.serialized()
 
       return WrappingController(matchPath: matchPath) {
         MemoEditorPage(store: .init(
-          initialState: MemoEditorStore.State(title: mutation?.title, date: mutation?.date, content: mutation?.content),
+          initialState: MemoEditorStore.State(injectionItem: item.decoded()),
           reducer: {
             MemoEditorStore(env: MemoEditorEnvLive(
               useCaseGroup: env,
@@ -26,11 +24,3 @@ struct MemoEditorRouteBuilder<RootNavigator: RootNavigatorType> {
   }
 }
 
-extension MemoEntity.Item {
-  fileprivate func serialized() -> MemoEditorStore.State {
-    .init(
-      title: title,
-      date: .init(timeIntervalSince1970: date),
-      content: content)
-  }
-}
