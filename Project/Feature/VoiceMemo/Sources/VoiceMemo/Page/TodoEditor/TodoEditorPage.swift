@@ -63,7 +63,7 @@ extension TodoEditorPage: View {
         title: title)
       {
         VStack(alignment: .leading, spacing: 16) {
-          TextField("", text: viewStore.$title, prompt: .init("제목을  입력해주세요"))
+          TextField("", text: viewStore.$title, prompt: .init("제목을 입력해주세요"))
 
           Divider()
             .background(DesignSystemColor.palette(.gray(.lv100)).color)

@@ -31,7 +31,7 @@ extension TodoUseCasePlatform: TodoUseCase {
     { targetList in
       Future<[TodoEntity.Item], CompositeErrorRepository> { promise in
         let currentItemList = client.getItem()
-        let newItemList = currentItemList.delete(targetLiset: targetList)
+        let newItemList = currentItemList.delete(targetList: targetList)
         return promise(.success(client.savedItem(new: newItemList)))
       }
       .eraseToAnyPublisher()
@@ -71,9 +71,9 @@ extension [TodoEntity.Item] {
   }
 
   // id가 같은 것들을 포함하지 하지 않는 것들만 새로 배열을 만드는 것 => 현재 배열에서 targerList에 있는 것들을 포함하지 않는 배열을 새로 만듬
-  fileprivate func delete(targetLiset: [TodoEntity.Item]) -> Self {
+  fileprivate func delete(targetList: [TodoEntity.Item]) -> Self {
     self.filter { item in
-      !targetLiset.contains(where: { $0.id == item.id })
+      !targetList.contains(where: { $0.id == item.id })
     }
   }
 

@@ -37,10 +37,12 @@ extension TodoStore: Reducer {
         env.routeToTabItem(matchPath)
         return .none
 
+      // 처음에 작성하는 것
       case .onTapTodoEditor:
         env.routeToTodoEditor(.none)
         return .none
 
+      // 작성 된것 수정
       case .onTapEdit(let item):
         env.routeToTodoEditor(item)
         return .none
@@ -98,7 +100,7 @@ extension TodoStore {
     case routeToTabBarItem(String)
 
     case onTapTodoEditor // 투두 작성 버튼
-    case onTapEdit(TodoEntity.Item) // 네비게이션 버튼
+    case onTapEdit(TodoEntity.Item)
 
     case onTapDeleteTarget(TodoEntity.Item) // Item의 isChecked(entity) 토글
     case onTapDeleteList([TodoEntity.Item]) // 선택된 아이템들 삭제
