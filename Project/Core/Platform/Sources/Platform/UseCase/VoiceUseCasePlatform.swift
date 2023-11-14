@@ -3,25 +3,42 @@ import Combine
 import Domain
 
 public struct VoiceUseCasePlatform {
-  private let client = VoiceRecordClient()
+  private let recordClient = VoiceRecordClient()
+  private let playCliennt = VoicePlayClient()
   
   public init() { }
 }
 
 extension VoiceUseCasePlatform: VoiceUseCase {
-  public  var start: (String) -> AnyPublisher<URL, CompositeErrorRepository> {
+  public  var startRecording: (String) -> AnyPublisher<URL, CompositeErrorRepository> {
     { id in
-       client
+      recordClient
         .prepare()
         .map { _ in id }
-        .flatMap(client.start(id:))
+        .flatMap(recordClient.start(id:))
         .eraseToAnyPublisher()
     }
   }
   
-  public var stop: () -> AnyPublisher<Void, CompositeErrorRepository> {
+  public var stopRecording: () -> AnyPublisher<Void, CompositeErrorRepository> {
     {
-      client
+      recordClient
+        .stop()
+        .eraseToAnyPublisher()
+    }
+  }
+  
+  public var startPlaying: (String) -> AnyPublisher<URL, CompositeErrorRepository> {
+    { id in
+      playCliennt
+        .start(id: id)
+        .eraseToAnyPublisher()
+    }
+  }
+  
+  public var stopPalying: () -> AnyPublisher<Void, CompositeErrorRepository> {
+    {
+      playCliennt
         .stop()
         .eraseToAnyPublisher()
     }

@@ -41,6 +41,18 @@ extension AudioMemoStore: Reducer {
         return env.recordStop()
           .cancellable(pageID: pageID, id: CancelID.requestAudioRecord)
         
+      case .onTapPlayStart:
+        let id = UUID().uuidString
+        return .concatenate(
+          .cancel(pageID: pageID, id: CancelID.requestAudioPlay),
+          env.playStart(id)
+            .cancellable(pageID: pageID, id: CancelID.requestAudioPlay)
+        )
+        
+      case .onTapPlayStop:
+        return env.playStop()
+          .cancellable(pageID: pageID, id: CancelID.requestAudioPlay)
+        
       case .routeToTabBarItem(let matchPath):
         env.routeToTabItem(matchPath)
         return .none
@@ -56,9 +68,21 @@ extension AudioMemoStore: Reducer {
           return .run { await $0(.throwError(error)) }
         }
         
+      case .fetchPlay(let result):
+        state.fetchPlay.isLoading = false
+        switch result {
+        case .success(let isPlaying):
+          state.isPlaying = isPlaying
+          return .none
+          
+        case .failure(let error):
+          return .run { await $0(.throwError(error)) }
+        }
+        
       case .throwError(let error):
         print(error)
         return .none
+
       }
     }
   }
@@ -70,11 +94,14 @@ extension AudioMemoStore {
   struct State: Equatable {
     init() {
       _fetchRecord = .init(.init(isLoading: false))
+      _fetchPlay = .init(.init(isLoading: false))
     }
     
     var isRecording = false
-    
+    var isPlaying = false
+        
     @Heap var fetchRecord: FetchState.Empty
+    @Heap var fetchPlay: FetchState.Empty
      
   }
 }
@@ -85,13 +112,18 @@ extension AudioMemoStore {
   enum Action: Equatable, BindableAction {
     case binding(BindingAction<State>)
     case teardown
-
+    
     case onTapRecordStart
     case onTapRecordStop
+    
+    case onTapPlayStart
+    case onTapPlayStop
     
     case routeToTabBarItem(String)
 
     case fetchRecord(Result<Bool, CompositeErrorRepository>)
+    case fetchPlay(Result<Bool, CompositeErrorRepository>)
+    
     case throwError(CompositeErrorRepository)
   }
 }
@@ -102,5 +134,6 @@ extension AudioMemoStore {
   enum CancelID: Equatable, CaseIterable {
     case teardown
     case requestAudioRecord
+    case requestAudioPlay
   }
 }
