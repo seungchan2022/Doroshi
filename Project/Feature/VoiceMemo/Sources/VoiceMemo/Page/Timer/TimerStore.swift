@@ -20,7 +20,7 @@ struct TimerStore {
 extension TimerStore: Reducer {
   var body: some ReducerOf<Self> {
     BindingReducer()
-    Reduce { _, action in
+    Reduce { state, action in
       switch action {
       case .binding:
         return .none
@@ -31,6 +31,14 @@ extension TimerStore: Reducer {
 
       case .routeToTabBarItem(let matchPath):
         env.routeToTabItem(matchPath)
+        return .none
+        
+      case .startTimer:
+        return .none
+
+        
+      case .stopTimer:
+
         return .none
 
       case .throwError(let error):
@@ -46,9 +54,7 @@ extension TimerStore: Reducer {
 extension TimerStore {
   struct State: Equatable {
 
-    @BindingState var hour = 0
-    @BindingState var minute = 0
-    @BindingState var second = 0
+    
   }
 }
 
@@ -60,7 +66,10 @@ extension TimerStore {
     case teardown
 
     case routeToTabBarItem(String)
-
+    
+    case startTimer
+    case stopTimer
+    
     case throwError(CompositeErrorRepository)
   }
 }
@@ -70,5 +79,18 @@ extension TimerStore {
 extension TimerStore {
   enum CancelID: Equatable, CaseIterable {
     case teardown
+  }
+}
+
+extension Int {
+  fileprivate func formattedTimeString(time: Int) -> String {
+    
+    let remainingHours = String(format: "%02d", time / 3600)
+    let remainingMinutes = String(format: "%02d", (time % 3600) / 60)
+    let remainingSeconds = String(format: "%02d", time % 60)
+    
+    let formattedTime = "\(remainingHours) : \(remainingMinutes) : \(remainingSeconds)"
+    
+    return formattedTime
   }
 }
