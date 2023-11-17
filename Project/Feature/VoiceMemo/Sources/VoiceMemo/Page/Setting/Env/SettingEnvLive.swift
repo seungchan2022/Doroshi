@@ -27,7 +27,7 @@ extension SettingEnvLive: SettingEnvType {
     {
       navigator.backOrNext(
         linkItem: .init(path: Link.VoiceMemo.Path.todo.rawValue),
-        isAnimated: false)
+        isAnimated: true)
     }
   }
 
@@ -35,7 +35,7 @@ extension SettingEnvLive: SettingEnvType {
     {
       navigator.backOrNext(
         linkItem: .init(path: Link.VoiceMemo.Path.memo.rawValue),
-        isAnimated: false)
+        isAnimated: true)
     }
   }
 
@@ -43,7 +43,7 @@ extension SettingEnvLive: SettingEnvType {
     {
       navigator.backOrNext(
         linkItem: .init(path: Link.VoiceMemo.Path.audioMemo.rawValue),
-        isAnimated: false)
+        isAnimated: true)
     }
   }
 
@@ -51,7 +51,7 @@ extension SettingEnvLive: SettingEnvType {
     {
       navigator.backOrNext(
         linkItem: .init(path: Link.VoiceMemo.Path.timer.rawValue),
-        isAnimated: false)
+        isAnimated: true)
     }
   }
 }
