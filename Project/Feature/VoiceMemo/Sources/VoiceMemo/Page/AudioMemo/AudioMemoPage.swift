@@ -46,6 +46,9 @@ extension AudioMemoPage: View {
             .padding(.trailing, 30)
             .padding(.bottom, 40)
         }
+        ForEach(viewStore.fetchRecordList, id: \.self) { item in
+            Text(item)
+        }
       }
       .overlay(alignment: .bottomTrailing) {
         RecordButton(
@@ -59,5 +62,8 @@ extension AudioMemoPage: View {
     }
     .navigationTitle("")
     .navigationBarHidden(true)
+    .onAppear {
+      viewStore.send(.getRecordList)
+    }
   }
 }

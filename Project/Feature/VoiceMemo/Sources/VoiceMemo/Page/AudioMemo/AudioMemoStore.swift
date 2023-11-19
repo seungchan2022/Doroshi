@@ -6,11 +6,11 @@ import Foundation
 // MARK: - AudioMemoStore
 
 struct AudioMemoStore {
-
+  
   init(env: AudioMemoEnvType) {
     self.env = env
   }
-
+  
   let pageID = UUID().uuidString
   let env: AudioMemoEnvType
 }
@@ -24,11 +24,15 @@ extension AudioMemoStore: Reducer {
       switch action {
       case .binding:
         return .none
-
+        
       case .teardown:
         return .concatenate(
           CancelID.allCases.map { .cancel(pageID: pageID, id: $0) })
-
+        
+      case .getRecordList:
+        return env.recordList()
+          .cancellable(pageID: pageID, id: CancelID.requestGetRecordList)
+        
       case .onTapRecordStart:
         let id = UUID().uuidString
         return .concatenate(
@@ -56,7 +60,7 @@ extension AudioMemoStore: Reducer {
       case .routeToTabBarItem(let matchPath):
         env.routeToTabItem(matchPath)
         return .none
-
+        
       case .fetchRecord(let result):
         state.fetchRecord.isLoading = false
         switch result {
@@ -79,10 +83,19 @@ extension AudioMemoStore: Reducer {
           return .run { await $0(.throwError(error)) }
         }
         
+      case .fetchRecordList(let result):
+        switch result {
+        case .success(let list):
+          state.fetchRecordList = list
+          return .none
+          
+        case .failure(let error):
+          return .run { await $0(.throwError(error)) }
+        }
+        
       case .throwError(let error):
         print(error)
         return .none
-
       }
     }
   }
@@ -95,14 +108,16 @@ extension AudioMemoStore {
     init() {
       _fetchRecord = .init(.init(isLoading: false))
       _fetchPlay = .init(.init(isLoading: false))
+      
+      fetchRecordList = []
     }
     
     var isRecording = false
     var isPlaying = false
-        
+    var fetchRecordList: [String]
+    
     @Heap var fetchRecord: FetchState.Empty
     @Heap var fetchPlay: FetchState.Empty
-     
   }
 }
 
@@ -113,6 +128,8 @@ extension AudioMemoStore {
     case binding(BindingAction<State>)
     case teardown
     
+    case getRecordList
+    
     case onTapRecordStart
     case onTapRecordStop
     
@@ -120,9 +137,11 @@ extension AudioMemoStore {
     case onTapPlayStop
     
     case routeToTabBarItem(String)
-
+    
     case fetchRecord(Result<Bool, CompositeErrorRepository>)
     case fetchPlay(Result<Bool, CompositeErrorRepository>)
+    
+    case fetchRecordList(Result<[String], CompositeErrorRepository>)
     
     case throwError(CompositeErrorRepository)
   }
@@ -135,5 +154,6 @@ extension AudioMemoStore {
     case teardown
     case requestAudioRecord
     case requestAudioPlay
+    case requestGetRecordList
   }
 }

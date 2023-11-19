@@ -55,6 +55,24 @@ extension VoiceRecordClient {
     }
     .eraseToAnyPublisher()
   }
+  
+  func pathRecordingList() -> AnyPublisher<[String], CompositeErrorRepository> {
+    Future<[String], CompositeErrorRepository> { promise in
+      guard let pathDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+      else { return promise(.failure(.notFoundFilePath)) }
+      
+      print("녹음된 파일들 주소: ", pathDirectory.absoluteString)
+      
+      do {
+        let url = try FileManager.default.contentsOfDirectory(at: pathDirectory, includingPropertiesForKeys: .none)
+        let recordingList = url.filter { $0.pathExtension == "wav" }.map { $0.lastPathComponent }
+        return promise(.success(recordingList))
+      } catch {
+        return promise(.failure(.other(error)))
+      }
+    }
+    .eraseToAnyPublisher()
+  }
 }
 
 extension VoiceRecordClient: AVAudioRecorderDelegate {

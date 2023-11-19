@@ -28,6 +28,14 @@ extension VoiceUseCasePlatform: VoiceUseCase {
     }
   }
   
+  public var getRecordingList: () -> AnyPublisher<[String], CompositeErrorRepository> {
+    {
+      recordClient
+        .pathRecordingList()
+        .eraseToAnyPublisher()
+    }
+  }
+  
   public var startPlaying: (String) -> AnyPublisher<URL, CompositeErrorRepository> {
     { id in
       playCliennt

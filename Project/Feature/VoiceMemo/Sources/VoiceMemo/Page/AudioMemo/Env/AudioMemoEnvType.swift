@@ -12,6 +12,8 @@ protocol AudioMemoEnvType {
   var recordStart: (String) -> Effect<AudioMemoStore.Action> { get }
   var recordStop: () -> Effect<AudioMemoStore.Action> { get }
   
+  var recordList: () -> Effect<AudioMemoStore.Action> { get }
+  
   var playStart: (String) -> Effect<AudioMemoStore.Action> { get }
   var playStop: () -> Effect<AudioMemoStore.Action> { get }
   
@@ -42,6 +44,19 @@ extension AudioMemoEnvType {
           .map { _ in false }
           .mapToResult()
           .map(AudioMemoStore.Action.fetchRecord)
+      }
+    }
+  }
+  
+  var recordList: () -> Effect<AudioMemoStore.Action> {
+    {
+      .publisher {
+        useCaseGroup.voiceUseCase
+          .getRecordingList()
+          .receive(on: mainQueue)
+          .mapToResult()
+          .map(AudioMemoStore.Action.fetchRecordList)
+          
       }
     }
   }
