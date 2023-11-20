@@ -22,4 +22,14 @@ extension TimerEnvLive: TimerEnvType {
       navigator.replace(linkItem: .init(path: path), isAnimated: false)
     }
   }
+  
+  var routeToDetail: (TimerEntity.AlarmItem) -> Void {
+    { item in
+      navigator.backOrNext(
+        linkItem: .init(
+          path: Link.VoiceMemo.Path.timerDetail.rawValue,
+          items: item.encoded()),
+        isAnimated: true)
+    }
+  }
 }

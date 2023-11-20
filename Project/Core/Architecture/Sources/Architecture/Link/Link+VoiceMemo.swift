@@ -17,6 +17,7 @@ extension Link.VoiceMemo {
     case memo
     case memoEditor
     case timer
+    case timerDetail
     case setting
   }
 }

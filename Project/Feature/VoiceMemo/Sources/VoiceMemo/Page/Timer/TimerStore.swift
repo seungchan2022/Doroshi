@@ -33,14 +33,14 @@ extension TimerStore: Reducer {
         env.routeToTabItem(matchPath)
         return .none
         
-      case .startTimer:
+      case .routeToDetail:
+        env.routeToDetail(.init(
+          hour: state.hour,
+          minute: state.minute,
+          second: state.second))
         return .none
-
         
-      case .stopTimer:
-
-        return .none
-
+      
       case .throwError(let error):
         print(error)
         return .none
@@ -53,7 +53,9 @@ extension TimerStore: Reducer {
 
 extension TimerStore {
   struct State: Equatable {
-
+    @BindingState var hour: Int = .zero
+    @BindingState var minute: Int = .zero
+    @BindingState var second: Int = .zero
     
   }
 }
@@ -66,9 +68,8 @@ extension TimerStore {
     case teardown
 
     case routeToTabBarItem(String)
-    
-    case startTimer
-    case stopTimer
+        
+    case routeToDetail
     
     case throwError(CompositeErrorRepository)
   }

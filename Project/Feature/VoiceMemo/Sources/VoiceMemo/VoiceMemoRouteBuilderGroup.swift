@@ -17,6 +17,7 @@ extension VoiceMemoRouteBuilderGroup {
       MemoRouteBuilder.generate(),
       MemoEditorRouteBuilder.generate(),
       TimerRouteBuilder.generate(),
+      TimerDetailRouteBuilder.generate(),
       SettingRouteBuilder.generate(),
     ]
   }
