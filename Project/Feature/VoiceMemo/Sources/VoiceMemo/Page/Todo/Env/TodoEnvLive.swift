@@ -33,4 +33,19 @@ extension TodoEnvLive: TodoEnvType {
         isAnimated: true)
     }
   }
+  
+  var routeToAlert: () -> Void {
+    { 
+      navigator.alert(
+        target: .root,
+        model: .init(
+          message: "test",
+          buttons: [
+            .init(title: "취소", style: .cancel, action: {  }),
+            .init(title: "삭제", style: .default, action: {  })
+          ],
+          flagType: .default))
+    }
+  }
 }
+ 

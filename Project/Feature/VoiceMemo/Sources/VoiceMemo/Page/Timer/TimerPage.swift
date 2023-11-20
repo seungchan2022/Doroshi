@@ -28,7 +28,7 @@ struct TimerPage {
 }
 
 extension TimerPage {
-  private var tabNavigationComponeentViewState: TabNavigationComponent.ViewState {
+  private var tabNavigationComponentViewState: TabNavigationComponent.ViewState {
     .init(activeMatchPath: Link.VoiceMemo.Path.timer.rawValue)
   }
   
@@ -186,7 +186,7 @@ extension TimerPage: View {
       }
       
       TabNavigationComponent(
-        viewState: tabNavigationComponeentViewState,
+        viewState: tabNavigationComponentViewState,
         tapAction: { viewStore.send(.routeToTabBarItem($0)) })
     }
     

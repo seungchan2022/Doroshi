@@ -20,7 +20,7 @@ struct TodoPage {
 }
 
 extension TodoPage {
-  private var tabNavigationComponeentViewState: TabNavigationComponent.ViewState {
+  private var tabNavigationComponentViewState: TabNavigationComponent.ViewState {
     .init(activeMatchPath: Link.VoiceMemo.Path.todo.rawValue)
   }
 
@@ -45,6 +45,9 @@ extension TodoPage: View {
                 .init(
                   title: viewStore.isEditing ? "완료" : "편집",
                   action: { viewStore.send(.onTapDeleteList(viewStore.fetchTodoList)) }),
+                .init(
+                  title: "삭제",
+                  action: { viewStore.send(.routeToAlert)})
               ]),
             title: "To do list \(viewStore.fetchTodoList.count)개가\n있습니다.")
           {
@@ -142,7 +145,7 @@ extension TodoPage: View {
       Spacer()
 
       TabNavigationComponent(
-        viewState: tabNavigationComponeentViewState,
+        viewState: tabNavigationComponentViewState,
         tapAction: { viewStore.send(.routeToTabBarItem($0)) })
     }
 

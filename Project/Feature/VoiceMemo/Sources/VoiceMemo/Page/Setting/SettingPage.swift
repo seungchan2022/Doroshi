@@ -18,7 +18,7 @@ struct SettingPage {
 }
 
 extension SettingPage {
-  private var tabNavigationComponeentViewState: TabNavigationComponent.ViewState {
+  private var tabNavigationComponentViewState: TabNavigationComponent.ViewState {
     .init(activeMatchPath: Link.VoiceMemo.Path.setting.rawValue)
   }
 
@@ -139,7 +139,7 @@ extension SettingPage: View {
           .background(DesignSystemColor.palette(.gray(.lv100)).color)
       }
       TabNavigationComponent(
-        viewState: tabNavigationComponeentViewState,
+        viewState: tabNavigationComponentViewState,
         tapAction: { viewStore.send(.routeToTabBarItem($0)) })
     }
     .onAppear {

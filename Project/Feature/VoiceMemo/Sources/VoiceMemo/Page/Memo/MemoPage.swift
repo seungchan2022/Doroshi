@@ -18,7 +18,7 @@ struct MemoPage {
 }
 
 extension MemoPage {
-  private var tabNavigationComponeentViewState: TabNavigationComponent.ViewState {
+  private var tabNavigationComponentViewState: TabNavigationComponent.ViewState {
     .init(activeMatchPath: Link.VoiceMemo.Path.memo.rawValue)
   }
   
@@ -124,7 +124,7 @@ extension MemoPage: View {
         .padding(.bottom, 40)
       }
       TabNavigationComponent(
-        viewState: tabNavigationComponeentViewState,
+        viewState: tabNavigationComponentViewState,
         tapAction: { viewStore.send(.routeToTabBarItem($0)) })
     }
     .onAppear {
