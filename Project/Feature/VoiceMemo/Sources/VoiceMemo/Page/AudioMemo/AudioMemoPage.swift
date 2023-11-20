@@ -37,19 +37,20 @@ extension AudioMemoPage: View {
   var body: some View {
     VStack {
       DesignSystemNavigation(title: "음성 메모") {
-        Button(action: {
-          viewStore.send(viewStore.isPlaying ? .onTapPlayStop : .onTapPlayStart)
-        }) {
-          Circle()
-            .fill(viewStore.isPlaying ? .blue : .gray)
-            .frame(width: 50, height: 50)
-            .padding(.trailing, 30)
-            .padding(.bottom, 40)
-        }
+
         ForEach(viewStore.fetchRecordList, id: \.self) { item in
+          Button(action: {
+            viewStore.send(
+              viewStore.isPlaying ? .onTapPlayStop : .onTapPlayStart(item))
+            
+          }) {
             Text(item)
+              .opacity(viewStore.isPlaying ? 0.2 : 1)
+          }
         }
       }
+      
+      
       .overlay(alignment: .bottomTrailing) {
         RecordButton(
           viewState: recordButtonViewState,

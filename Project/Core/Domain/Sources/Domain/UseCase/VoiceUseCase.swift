@@ -7,6 +7,6 @@ public protocol VoiceUseCase {
   
   var getRecordingList: () -> AnyPublisher<[String], CompositeErrorRepository> { get }
   
-  var startPlaying: (String) -> AnyPublisher<URL, CompositeErrorRepository> { get }
-  var stopPalying: () -> AnyPublisher<Void, CompositeErrorRepository> { get }
+  var startPlaying: (String) -> AnyPublisher<VoiceEntity.Action, CompositeErrorRepository> { get }
+  var stopPlaying: () -> AnyPublisher<Void, CompositeErrorRepository> { get }
 }

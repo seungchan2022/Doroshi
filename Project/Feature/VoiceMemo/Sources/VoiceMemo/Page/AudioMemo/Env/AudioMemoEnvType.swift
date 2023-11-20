@@ -67,7 +67,13 @@ extension AudioMemoEnvType {
           useCaseGroup.voiceUseCase
             .startPlaying(id)
             .receive(on: mainQueue)
-            .map { _ in true }
+            .map { item in
+              print("AAA: ", item)
+              switch item {
+              case .idle: return false
+              case .playing: return true
+              }
+            }
             .mapToResult()
             .map(AudioMemoStore.Action.fetchPlay)
         }
@@ -79,7 +85,7 @@ extension AudioMemoEnvType {
     {
       .publisher {
         useCaseGroup.voiceUseCase
-          .stopPalying()
+          .stopPlaying()
           .receive(on: mainQueue)
           .map { _ in false }
           .mapToResult()

@@ -45,8 +45,7 @@ extension AudioMemoStore: Reducer {
         return env.recordStop()
           .cancellable(pageID: pageID, id: CancelID.requestAudioRecord)
         
-      case .onTapPlayStart:
-        let id = UUID().uuidString
+      case .onTapPlayStart(let id):
         return .concatenate(
           .cancel(pageID: pageID, id: CancelID.requestAudioPlay),
           env.playStart(id)
@@ -133,7 +132,7 @@ extension AudioMemoStore {
     case onTapRecordStart
     case onTapRecordStop
     
-    case onTapPlayStart
+    case onTapPlayStart(String)
     case onTapPlayStop
     
     case routeToTabBarItem(String)

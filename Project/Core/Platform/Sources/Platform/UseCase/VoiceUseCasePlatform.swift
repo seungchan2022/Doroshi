@@ -4,7 +4,7 @@ import Domain
 
 public struct VoiceUseCasePlatform {
   private let recordClient = VoiceRecordClient()
-  private let playCliennt = VoicePlayClient()
+  private let playClient = VoicePlayClient()
   
   public init() { }
 }
@@ -36,17 +36,17 @@ extension VoiceUseCasePlatform: VoiceUseCase {
     }
   }
   
-  public var startPlaying: (String) -> AnyPublisher<URL, CompositeErrorRepository> {
+  public var startPlaying: (String) -> AnyPublisher<VoiceEntity.Action, CompositeErrorRepository> {
     { id in
-      playCliennt
+      playClient
         .start(id: id)
         .eraseToAnyPublisher()
     }
   }
   
-  public var stopPalying: () -> AnyPublisher<Void, CompositeErrorRepository> {
+  public var stopPlaying: () -> AnyPublisher<Void, CompositeErrorRepository> {
     {
-      playCliennt
+      playClient
         .stop()
         .eraseToAnyPublisher()
     }
