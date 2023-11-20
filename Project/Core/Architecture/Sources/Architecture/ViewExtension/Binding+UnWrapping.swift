@@ -9,7 +9,7 @@ extension Binding {
     self.init(wrapping: base, case: /Optional.some)
   }
 
-  public init?<Enum>(wrapping enum: Binding<Enum>, case casePath: CasePath<Enum, Value>) {
+  public init?<Enum>(wrapping enum: Binding<Enum>, case casePath: AnyCasePath<Enum, Value>) {
     guard var `case` = casePath.extract(from: `enum`.wrappedValue) else { return nil }
 
     self.init(
@@ -25,7 +25,7 @@ extension Binding {
 
   // MARK: Public
 
-  public func `case`<Enum, Case>(_ casePath: CasePath<Enum, Case>) -> Binding<Case?> where Value == Enum? {
+  public func `case`<Enum, Case>(_ casePath: AnyCasePath<Enum, Case>) -> Binding<Case?> where Value == Enum? {
     .init(
       get: { wrappedValue.flatMap(casePath.extract(from:)) },
       set: { newValue, transaction in
@@ -43,7 +43,7 @@ extension Binding {
       })
   }
 
-  public func isPresent<Enum, Case>(_ casePath: CasePath<Enum, Case>) -> Binding<Bool> where Value == Enum? {
+  public func isPresent<Enum, Case>(_ casePath: AnyCasePath<Enum, Case>) -> Binding<Bool> where Value == Enum? {
     self.case(casePath).isPresent()
   }
 

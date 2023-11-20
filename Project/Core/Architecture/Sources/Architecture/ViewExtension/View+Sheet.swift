@@ -8,7 +8,7 @@ extension View {
 
   public func sheet<Enum, Case>(
     unwrapping enum: Binding<Enum?>,
-    case casePath: CasePath<Enum, Case>,
+    case casePath: AnyCasePath<Enum, Case>,
     onDismiss: (() -> Void)? = .none,
     @ViewBuilder content: @escaping (Binding<Case>) -> some View)
     -> some View
@@ -40,7 +40,7 @@ extension View {
 
   public func fullScreenCover<Enum, Case>(
     unwrapping enum: Binding<Enum?>,
-    case casePath: CasePath<Enum, Case>,
+    case casePath: AnyCasePath<Enum, Case>,
     @ViewBuilder content: @escaping (Binding<Case>) -> some View)
     -> some View
   {
