@@ -13,6 +13,7 @@ public enum DesignSystemIcon {
   case pencil
   case unChecked
   case checked
+  case delete
 
   // MARK: Public
 
@@ -30,6 +31,7 @@ public enum DesignSystemIcon {
       case .pencil: Image(systemName: "pencil")
       case .unChecked: Image(systemName: "rectangle")
       case .checked: Image(systemName: "checkmark.rectangle")
+      case .delete: Image(systemName: "trash")
       }
     }
 

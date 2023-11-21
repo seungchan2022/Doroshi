@@ -13,6 +13,7 @@ protocol AudioMemoEnvType {
   var recordStop: () -> Effect<AudioMemoStore.Action> { get }
   
   var recordList: () -> Effect<AudioMemoStore.Action> { get }
+  var deleteRecording: (String) -> Effect<AudioMemoStore.Action> { get }
   
   var playStart: (String) -> Effect<AudioMemoStore.Action> { get }
   var playStop: () -> Effect<AudioMemoStore.Action> { get }
@@ -56,8 +57,20 @@ extension AudioMemoEnvType {
           .receive(on: mainQueue)
           .mapToResult()
           .map(AudioMemoStore.Action.fetchRecordList)
-          
+        
       }
+    }
+  }
+
+  var deleteRecording: (String) -> Effect<AudioMemoStore.Action> {
+    { id in
+        .publisher {
+          useCaseGroup.voiceUseCase
+            .deleteRecord(id)
+            .receive(on: mainQueue)
+            .mapToResult()
+            .map(AudioMemoStore.Action.fetchDelete)
+        }
     }
   }
   
@@ -78,7 +91,6 @@ extension AudioMemoEnvType {
             .map(AudioMemoStore.Action.fetchPlay)
         }
     }
-    
   }
   
   var playStop: () -> Effect<AudioMemoStore.Action> {
@@ -94,3 +106,7 @@ extension AudioMemoEnvType {
     }
   }
 }
+
+
+
+

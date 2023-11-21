@@ -37,17 +37,35 @@ extension AudioMemoPage: View {
   var body: some View {
     VStack {
       DesignSystemNavigation(title: "음성 메모") {
-
+        Divider()
+          .background(DesignSystemColor.palette(.gray(.lv100)).color)
+        
         ForEach(viewStore.fetchRecordList, id: \.self) { item in
-          Button(action: {
-            viewStore.send(
-              viewStore.isPlaying ? .onTapPlayStop : .onTapPlayStart(item))
+          HStack {
+            Button(action: {
+              viewStore.send(
+                viewStore.isPlaying ? .onTapPlayStop : .onTapPlayStart(item))
+              
+            }) {
+              Text(item)
+                .opacity(viewStore.isPlaying ? 0.2 : 1)
+            }
             
-          }) {
-            Text(item)
-              .opacity(viewStore.isPlaying ? 0.2 : 1)
+            Button(action: {
+              viewStore.send(.onTapDelete(item))
+              print("tap")
+            }) {
+              DesignSystemIcon.delete.image
+                .resizable()
+                .frame(width: 20, height: 20)
+                .foregroundStyle(DesignSystemColor.palette(.gray(.lv400)).color)
+            }
           }
+          
+          Divider()
+            .background(DesignSystemColor.palette(.gray(.lv100)).color)
         }
+        
       }
       
       
@@ -66,5 +84,9 @@ extension AudioMemoPage: View {
     .onAppear {
       viewStore.send(.getRecordList)
     }
+  }
+  
+  func deleteItem(at offsets: IndexSet) {
+    
   }
 }

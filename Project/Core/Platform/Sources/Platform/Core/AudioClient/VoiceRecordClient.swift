@@ -73,7 +73,22 @@ extension VoiceRecordClient {
     }
     .eraseToAnyPublisher()
   }
+  
+  
+  func deleteRecording(id: String) -> AnyPublisher<String, CompositeErrorRepository> {
+    Future<String, CompositeErrorRepository> { promise in
+      guard let path = FileManager.default.findPath(id) else { return promise(.failure(.notFoundFilePath) )}
+      do {
+        try FileManager.default.removeItem(at: path)
+        return promise(.success(id))
+      } catch {
+        return promise(.failure(.other(error)))
+      }
+    }
+    .eraseToAnyPublisher()
+  }
 }
+
 
 extension VoiceRecordClient: AVAudioRecorderDelegate {
   func audioRecorderEncodeErrorDidOccur(_ recorder: AVAudioRecorder, error: Error?) {
@@ -89,7 +104,18 @@ extension FileManager {
         .appending(component: "\(name).wav")
     }
   }
+  
+  fileprivate var findPath: (String) -> URL? {
+    { name in
+      self.urls(for: .documentDirectory, in: .userDomainMask)
+        .first?
+        .appending(component: "\(name)")
+    }
+  }
+
+  
 }
+
 
 extension [String: Any] {
   fileprivate static var `default`: Self {

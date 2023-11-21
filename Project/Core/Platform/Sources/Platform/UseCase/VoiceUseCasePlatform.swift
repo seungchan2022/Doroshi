@@ -36,6 +36,14 @@ extension VoiceUseCasePlatform: VoiceUseCase {
     }
   }
   
+  public var deleteRecord: (String) -> AnyPublisher<String, CompositeErrorRepository> {
+    { id in
+      recordClient
+        .deleteRecording(id: id)
+        .eraseToAnyPublisher()
+    }
+  }
+
   public var startPlaying: (String) -> AnyPublisher<VoiceEntity.Action, CompositeErrorRepository> {
     { id in
       playClient

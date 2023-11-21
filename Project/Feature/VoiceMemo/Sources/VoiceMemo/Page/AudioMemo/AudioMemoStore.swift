@@ -56,6 +56,13 @@ extension AudioMemoStore: Reducer {
         return env.playStop()
           .cancellable(pageID: pageID, id: CancelID.requestAudioPlay)
         
+      case .onTapDelete(let id):
+        return .concatenate(
+//          .cancel(pageID: pageID, id: CancelID.requestDelete),
+          env.deleteRecording(id)
+            .cancellable(pageID: pageID, id: CancelID.requestDelete)
+        )
+        
       case .routeToTabBarItem(let matchPath):
         env.routeToTabItem(matchPath)
         return .none
@@ -91,6 +98,16 @@ extension AudioMemoStore: Reducer {
         case .failure(let error):
           return .run { await $0(.throwError(error)) }
         }
+
+      case .fetchDelete(let result):
+        switch result {
+        case .success(let item):
+          state.fetchDelete = item
+          return .none
+          
+        case .failure(let error):
+          return .run { await $0(.throwError(error)) }
+        }
         
       case .throwError(let error):
         print(error)
@@ -109,11 +126,13 @@ extension AudioMemoStore {
       _fetchPlay = .init(.init(isLoading: false))
       
       fetchRecordList = []
+      fetchDelete = ""
     }
     
     var isRecording = false
     var isPlaying = false
     var fetchRecordList: [String]
+    var fetchDelete: String
     
     @Heap var fetchRecord: FetchState.Empty
     @Heap var fetchPlay: FetchState.Empty
@@ -124,6 +143,7 @@ extension AudioMemoStore {
 
 extension AudioMemoStore {
   enum Action: Equatable, BindableAction {
+
     case binding(BindingAction<State>)
     case teardown
     
@@ -135,12 +155,16 @@ extension AudioMemoStore {
     case onTapPlayStart(String)
     case onTapPlayStop
     
+    case onTapDelete(String)
+    
     case routeToTabBarItem(String)
     
     case fetchRecord(Result<Bool, CompositeErrorRepository>)
     case fetchPlay(Result<Bool, CompositeErrorRepository>)
     
     case fetchRecordList(Result<[String], CompositeErrorRepository>)
+    
+    case fetchDelete(Result<String, CompositeErrorRepository>)
     
     case throwError(CompositeErrorRepository)
   }
@@ -154,5 +178,6 @@ extension AudioMemoStore {
     case requestAudioRecord
     case requestAudioPlay
     case requestGetRecordList
+    case requestDelete
   }
 }
