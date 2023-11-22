@@ -29,6 +29,14 @@ extension TimerDetailStore: Reducer {
         return .concatenate(
           CancelID.allCases.map { .cancel(pageID: pageID, id: $0) })
         
+      case .routeToTabBarItem(let matchPath):
+        env.routeToTabItem(matchPath)
+        return .none
+        
+      case .onTapback:
+        env.routeToBack()
+        return .none
+        
       case .onPullTimer:
         print("AAA")
         return .none
@@ -66,7 +74,11 @@ extension TimerDetailStore {
   enum Action: Equatable, BindableAction {
     case binding(BindingAction<State>)
     case teardown
+    
+    case routeToTabBarItem(String)
 
+    case onTapback
+    
     case onPullTimer
     
     case throwError(CompositeErrorRepository)

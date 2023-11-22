@@ -44,7 +44,7 @@ extension AudioMemoPage {
 extension AudioMemoPage: View {
   var body: some View {
     VStack {
-      DesignSystemNavigation(title: "음성 메모") {
+      DesignSystemNavigation(title: title) {
         Divider()
           .background(DesignSystemColor.palette(.gray(.lv100)).color)
         

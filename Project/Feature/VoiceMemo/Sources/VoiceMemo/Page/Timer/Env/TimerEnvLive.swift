@@ -29,7 +29,7 @@ extension TimerEnvLive: TimerEnvType {
         linkItem: .init(
           path: Link.VoiceMemo.Path.timerDetail.rawValue,
           items: item.encoded()),
-        isAnimated: true)
+        isAnimated: false)
     }
   }
 }

@@ -39,7 +39,6 @@ extension TimerStore: Reducer {
           minute: state.minute,
           second: state.second))
         return .none
-        
       
       case .throwError(let error):
         print(error)
@@ -80,18 +79,5 @@ extension TimerStore {
 extension TimerStore {
   enum CancelID: Equatable, CaseIterable {
     case teardown
-  }
-}
-
-extension Int {
-  fileprivate func formattedTimeString(time: Int) -> String {
-    
-    let remainingHours = String(format: "%02d", time / 3600)
-    let remainingMinutes = String(format: "%02d", (time % 3600) / 60)
-    let remainingSeconds = String(format: "%02d", time % 60)
-    
-    let formattedTime = "\(remainingHours) : \(remainingMinutes) : \(remainingSeconds)"
-    
-    return formattedTime
   }
 }

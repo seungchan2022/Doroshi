@@ -16,5 +16,16 @@ struct TimerDetailEnvLive {
 // MARK: TimerDetailEnvType
 
 extension TimerDetailEnvLive: TimerDetailEnvType { 
+  var routeToBack: () -> Void {
+    {
+      navigator.back(isAnimated: true)
+    }
+  }
   
+  var routeToTabItem: (String) -> Void {
+    { path in
+      guard path != Link.VoiceMemo.Path.timerDetail.rawValue else { return }
+      navigator.replace(linkItem: .init(path: path), isAnimated: false)
+    }
+  }
 }
