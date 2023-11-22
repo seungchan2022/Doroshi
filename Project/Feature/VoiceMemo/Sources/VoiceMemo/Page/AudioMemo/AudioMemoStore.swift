@@ -58,7 +58,7 @@ extension AudioMemoStore: Reducer {
         
       case .onTapDelete(let id):
         return .concatenate(
-//          .cancel(pageID: pageID, id: CancelID.requestDelete),
+          .cancel(pageID: pageID, id: CancelID.requestDelete),
           env.deleteRecording(id)
             .cancellable(pageID: pageID, id: CancelID.requestDelete)
         )
@@ -103,6 +103,7 @@ extension AudioMemoStore: Reducer {
         switch result {
         case .success(let item):
           state.fetchDelete = item
+          state.fetchRecordList = state.fetchRecordList.filter { $0 != item }
           return .none
           
         case .failure(let error):

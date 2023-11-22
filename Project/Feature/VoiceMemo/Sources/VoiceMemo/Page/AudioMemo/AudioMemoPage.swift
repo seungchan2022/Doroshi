@@ -15,6 +15,10 @@ struct AudioMemoPage {
   
   private let store: StoreOf<AudioMemoStore>
   @ObservedObject private var viewStore: ViewStoreOf<AudioMemoStore>
+  
+  // 각 아이템의 오프셋을 저장할 딕셔너리
+  @State private var offsetDic = [String: CGFloat]()
+  
 }
 
 extension AudioMemoPage {
@@ -29,6 +33,10 @@ extension AudioMemoPage {
   private var recordButtonViewState: RecordButton.ViewState {
     .init(isRecording: viewStore.isRecording)
   }
+  
+  private var maxDragDistance: CGFloat {
+    100
+  }
 }
 
 // MARK: View
@@ -42,33 +50,45 @@ extension AudioMemoPage: View {
         
         ForEach(viewStore.fetchRecordList, id: \.self) { item in
           HStack {
-            Button(action: {
-              viewStore.send(
-                viewStore.isPlaying ? .onTapPlayStop : .onTapPlayStart(item))
-              
-            }) {
-              Text(item)
-                .opacity(viewStore.isPlaying ? 0.2 : 1)
-            }
+            Text(item)
+              .opacity(viewStore.isPlaying ? 0.2 : 1)
+              .offset(x: offsetDic[item] ?? .zero)
+              .animation(.spring())
+              .onTapGesture {
+                viewStore.send(
+                  viewStore.isPlaying ? .onTapPlayStop : .onTapPlayStart(item))
+              }
             
-            Button(action: {
-              viewStore.send(.onTapDelete(item))
-              print("tap")
-            }) {
-              DesignSystemIcon.delete.image
-                .resizable()
-                .frame(width: 20, height: 20)
-                .foregroundStyle(DesignSystemColor.palette(.gray(.lv400)).color)
+            if (offsetDic[item] ?? .zero) <= -maxDragDistance {
+              Button(action: { viewStore.send(.onTapDelete(item)) }) {
+                DesignSystemIcon.delete.image
+                  .resizable()
+                  .frame(width: 30, height: 30)
+                  .foregroundColor(.red)
+              }
+              .frame(width: maxDragDistance, alignment: .trailing)
             }
           }
-          
+          .frame(maxWidth: .infinity)
+          .frame(height: 30)
+          .padding(.horizontal, 16)
+          .gesture(
+            DragGesture()
+              .onChanged { gesture in
+                // 최대 드래그 거리 제한
+                offsetDic[item] = max(gesture.translation.width, -maxDragDistance)
+              }
+              .onEnded { _ in
+                if (offsetDic[item] ?? 0) != -maxDragDistance {
+                  // 원래 위치로
+                  offsetDic[item] = 0
+                }
+              }
+          )
           Divider()
             .background(DesignSystemColor.palette(.gray(.lv100)).color)
         }
-        
       }
-      
-      
       .overlay(alignment: .bottomTrailing) {
         RecordButton(
           viewState: recordButtonViewState,
@@ -84,9 +104,5 @@ extension AudioMemoPage: View {
     .onAppear {
       viewStore.send(.getRecordList)
     }
-  }
-  
-  func deleteItem(at offsets: IndexSet) {
-    
   }
 }
