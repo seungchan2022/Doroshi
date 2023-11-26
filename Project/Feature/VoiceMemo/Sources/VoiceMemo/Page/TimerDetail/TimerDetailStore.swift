@@ -20,7 +20,7 @@ struct TimerDetailStore {
 extension TimerDetailStore: Reducer {
   var body: some ReducerOf<Self> {
     BindingReducer()
-    Reduce { _, action in
+    Reduce { state, action in
       switch action {
       case .binding:
         return .none

@@ -55,7 +55,6 @@ extension TimerStore {
     @BindingState var hour: Int = .zero
     @BindingState var minute: Int = .zero
     @BindingState var second: Int = .zero
-    
   }
 }
 

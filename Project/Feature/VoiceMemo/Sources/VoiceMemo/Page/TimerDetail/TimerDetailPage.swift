@@ -17,10 +17,32 @@ struct TimerDetailPage {
   @ObservedObject private var viewStore: ViewStoreOf<TimerDetailStore>
   
   @State private var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-  @State private var counter = 0
+  @State private var counter: Int = .zero
 }
 
 extension TimerDetailPage {
+  /// 로컬 알림을 스케줄링하는 메서드
+  private func scheduleNotfication() {
+    print("Scheduling notification")
+
+    let content = UNMutableNotificationContent()
+    content.title = "타이머 종료!"
+    content.subtitle = "설정한 타이머가 종료되었습니다."
+    content.sound = .default
+    
+    /// 알림이 발생하도록 트리거 설정
+    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0.1, repeats: false)
+    
+    /// 알림 요청 생성
+    let request = UNNotificationRequest(
+      identifier: UUID().uuidString,
+      content: content,
+      trigger: trigger)
+    
+    /// 알림 센터에 알림 요청 추가
+    UNUserNotificationCenter.current().add(request)
+  }
+  
   private var tabNavigationComponentViewState: TabNavigationComponent.ViewState {
     .init(activeMatchPath: Link.VoiceMemo.Path.timer.rawValue)
   }
@@ -147,12 +169,17 @@ extension TimerDetailPage: View {
         .padding(.top, 60)
         .padding(.horizontal, 20)
         .onReceive(timer, perform: { _ in
-          guard !isTimerZero else { return }
-          print("\(remainingTime)")
+          guard !isTimerZero else {          
+//            pause()
+//            scheduleNotfication()
+            return }
+         
           viewStore.send(.onPullTimer)
           counter = counter + 1
+          print("\(remainingTime)")
           if counter == settedTime {
             pause()
+            scheduleNotfication()
           }
         })
         

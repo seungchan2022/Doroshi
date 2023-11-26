@@ -32,6 +32,10 @@ extension TimerPage {
     && viewStore.minute == .zero
     && viewStore.second == .zero
   }
+  
+  private var settingButtonViewState: SettingButton.ViewState {
+    .init()
+  }
 }
 
 // MARK: View
@@ -69,16 +73,21 @@ extension TimerPage: View {
           Divider()
             .background(DesignSystemColor.palette(.gray(.lv100)).color)
           
-          Button(action: {
-            viewStore.send(.routeToDetail)
-          }) {
-            Text("설정하기")
-              .font(.system(size: 18, weight: .medium))
-              .foregroundStyle(DesignSystemColor.label(.default).color)
-              .opacity(settingButtonDisabled ? 0.3 : 1)
-          }
-          .padding(.top, 20)
-          .disabled(settingButtonDisabled)
+          
+          SettingButton(
+            viewState: settingButtonViewState,
+            tapAction: { viewStore.send(.routeToDetail) })
+          
+//          Button(action: {
+//            viewStore.send(.routeToDetail)
+//          }) {
+//            Text("설정하기")
+//              .font(.system(size: 18, weight: .medium))
+//              .foregroundStyle(DesignSystemColor.label(.default).color)
+//              .opacity(settingButtonDisabled ? 0.3 : 1)
+//          }
+//          .padding(.top, 20)
+//          .disabled(settingButtonDisabled)
         }
         .scrollDisabled(true)
       
