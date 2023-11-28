@@ -11,7 +11,7 @@ struct AppMain: App {
     WindowGroup {
       LinkNavigationView(
         linkNavigator: viewModel.linkNavigator,
-        item: .init(path: Link.VoiceMemo.Path.timer.rawValue))
+        item: .init(path: Link.VoiceMemo.Path.audioMemo.rawValue))
       .ignoresSafeArea(.all, edges: .bottom)
     }
   }

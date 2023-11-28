@@ -16,8 +16,7 @@ struct AudioMemoPage {
   private let store: StoreOf<AudioMemoStore>
   @ObservedObject private var viewStore: ViewStoreOf<AudioMemoStore>
   
-  // 각 아이템의 오프셋을 저장할 딕셔너리
-  @State private var offsetDic = [String: CGFloat]()
+  @State private var isEditingFocus: String? = .none
   
 }
 
@@ -45,48 +44,25 @@ extension AudioMemoPage: View {
   var body: some View {
     VStack {
       DesignSystemNavigation(title: title) {
-        Divider()
-          .background(DesignSystemColor.palette(.gray(.lv100)).color)
         
-        ForEach(viewStore.fetchRecordList, id: \.self) { item in
-          HStack {
-            Text(item)
-              .opacity(viewStore.isPlaying ? 0.2 : 1)
-              .offset(x: offsetDic[item] ?? .zero)
-              .animation(.spring())
-              .onTapGesture {
-                viewStore.send(
-                  viewStore.isPlaying ? .onTapPlayStop : .onTapPlayStart(item))
-              }
-            
-            if (offsetDic[item] ?? .zero) <= -maxDragDistance {
-              Button(action: { viewStore.send(.onTapDelete(item)) }) {
-                DesignSystemIcon.delete.image
-                  .resizable()
-                  .frame(width: 30, height: 30)
-                  .foregroundColor(.red)
-              }
-              .frame(width: maxDragDistance, alignment: .trailing)
+        ScrollView {
+          LazyVStack(alignment: .leading, spacing: .zero) {
+            ForEach(viewStore.fetchRecordList, id: \.self) { item in
+              RecordItem(
+                viewState: .init(
+                  id: item,
+                  isPlaying: viewStore.isPlaying,
+                  isLastItem: viewStore.fetchRecordList.last == item,
+                  isEdit: isEditingFocus == item),
+                swipeAction: { self.isEditingFocus = $0 },
+                playingAction: {
+                  viewStore.send(
+                    $0 ? .onTapPlayStop : .onTapPlayStart(item))
+                },
+                deleteAction: { viewStore.send(.onTapDelete($0))} )
             }
           }
-          .frame(maxWidth: .infinity)
-          .frame(height: 30)
-          .padding(.horizontal, 16)
-          .gesture(
-            DragGesture()
-              .onChanged { gesture in
-                // 최대 드래그 거리 제한
-                offsetDic[item] = max(gesture.translation.width, -maxDragDistance)
-              }
-              .onEnded { _ in
-                if (offsetDic[item] ?? 0) != -maxDragDistance {
-                  // 원래 위치로
-                  offsetDic[item] = 0
-                }
-              }
-          )
-          Divider()
-            .background(DesignSystemColor.palette(.gray(.lv100)).color)
+          .animation(.spring(), value: viewStore.fetchRecordList)
         }
       }
       .overlay(alignment: .bottomTrailing) {
