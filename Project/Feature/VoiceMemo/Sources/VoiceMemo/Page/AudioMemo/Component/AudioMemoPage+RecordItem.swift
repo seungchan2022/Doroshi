@@ -10,6 +10,8 @@ extension AudioMemoPage {
     let deleteAction: (String) -> Void
     
     private let distance: CGFloat = 30
+    
+    @State private var color: Color = .white
   }
 }
 
@@ -19,7 +21,7 @@ extension AudioMemoPage.RecordItem: View {
   var body: some View {
     ZStack {
       Rectangle()
-        .fill(.red)
+        .fill(color)
         .overlay(alignment: .trailing) {
           Button(action: { deleteAction(viewState.id) }) {
             DesignSystemIcon.delete.image
@@ -51,6 +53,10 @@ extension AudioMemoPage.RecordItem: View {
               }
             }
         )
+        .task {
+          let _ = try? await Task.sleep(for: .seconds(1))
+          color = .red
+        }
       
     }
     .overlay(alignment: .bottom, content: {
