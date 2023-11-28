@@ -10,7 +10,7 @@ struct TimerDetailRouteBuilder<RootNavigator: RootNavigatorType> {
       guard let env: VoiceMemoEnvironmentUseable = diContainer.resolve() else { return .none }
       guard let query: TimerEntity.AlarmItem = item.decoded() else { return .none }
 
-      return WrappingController(matchPath: matchPath) {
+      return DebugWrappingController(matchPath: matchPath) {
         TimerDetailPage(store: .init(
           initialState: TimerDetailStore.State(
             alarmInfo: query),

@@ -191,11 +191,16 @@ extension TimerDetailPage: View {
           viewStore.send(.teardown)
         }
       }
+      
+      
+      
+      TabNavigationComponent(
+        viewState: tabNavigationComponentViewState,
+        tapAction: { viewStore.send(.routeToTabBarItem($0))})
     }
+    .ignoresSafeArea(.all, edges: .bottom)
     
-    TabNavigationComponent(
-      viewState: tabNavigationComponentViewState,
-      tapAction: { viewStore.send(.routeToTabBarItem($0))})
+    
   }
   
   func pause() {

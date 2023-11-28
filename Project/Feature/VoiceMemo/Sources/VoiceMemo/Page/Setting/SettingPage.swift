@@ -146,6 +146,7 @@ extension SettingPage: View {
       viewStore.send(.getTodoList)
       viewStore.send(.getMemoList)
     }
+    .ignoresSafeArea(.all, edges: .bottom)
     .navigationTitle("")
     .navigationBarHidden(true)
   }

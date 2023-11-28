@@ -130,6 +130,7 @@ extension MemoPage: View {
     .onAppear {
       viewStore.send(.getMemoList)
     }
+    .ignoresSafeArea(.all, edges: .bottom)
     .navigationTitle("")
     .navigationBarHidden(true)
   }

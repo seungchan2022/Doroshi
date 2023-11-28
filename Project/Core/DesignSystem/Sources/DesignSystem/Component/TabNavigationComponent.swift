@@ -34,12 +34,11 @@ extension TabNavigationComponent: View {
     }
     .padding(.horizontal, 16)
     .padding(.top, 8)
+    .padding(.bottom, WindowAppearance.safeArea.bottom)
     .background {
       Rectangle()
-//        .fill(DesignSystemColor.system(.white).color)
         .fill(DesignSystemColor.label(.default).color)
         .shadow(color: .black.opacity(0.2), radius: 10, x: 0.0, y: -1)
-        .ignoresSafeArea(.all, edges: .bottom)
     }
   }
 }

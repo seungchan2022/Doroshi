@@ -8,7 +8,7 @@ struct SettingRouteBuilder<RootNavigator: RootNavigatorType> {
     return .init(matchPath: matchPath) { navigator, _, diContainer -> RouteViewController? in
       guard let env: VoiceMemoEnvironmentUseable = diContainer.resolve() else { return .none }
 
-      return WrappingController(matchPath: matchPath) {
+      return DebugWrappingController(matchPath: matchPath) {
         SettingPage(store: .init(
           initialState: SettingStore.State(),
           reducer: {

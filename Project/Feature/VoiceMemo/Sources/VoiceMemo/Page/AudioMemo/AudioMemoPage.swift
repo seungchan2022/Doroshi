@@ -99,6 +99,7 @@ extension AudioMemoPage: View {
         viewState: tabNavigationComponentViewState,
         tapAction: { viewStore.send(.routeToTabBarItem($0)) })
     }
+    .ignoresSafeArea(.all, edges: .bottom)
     .navigationTitle("")
     .navigationBarHidden(true)
     .onAppear {
