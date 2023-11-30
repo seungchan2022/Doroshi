@@ -1,14 +1,21 @@
-import Foundation
 import AVFoundation
-import Domain
 import Combine
+import Domain
+import Foundation
+
+// MARK: - VoiceRecordClient
 
 final class VoiceRecordClient: NSObject {
-  private var audioRecorder: AVAudioRecorder? = .none
-  
+
+  // MARK: Lifecycle
+
   override init() {
     super.init()
   }
+
+  // MARK: Private
+
+  private var audioRecorder: AVAudioRecorder? = .none
 }
 
 extension VoiceRecordClient {
@@ -27,11 +34,11 @@ extension VoiceRecordClient {
       .eraseToAnyPublisher()
     }
   }
-  
+
   func start(id: String) -> AnyPublisher<URL, CompositeErrorRepository> {
     Future<URL, CompositeErrorRepository> { [weak self] promise in
       guard let path = FileManager.default.makePath(id) else { return promise(.failure(.notFoundFilePath)) }
-      
+
       print("파일 주소: ", path.absoluteString)
       do {
         let audioRecorder = try AVAudioRecorder(url: path, settings: .default)
@@ -42,11 +49,10 @@ extension VoiceRecordClient {
       } catch {
         return promise(.failure(.other(error)))
       }
-      
     }
     .eraseToAnyPublisher()
   }
-  
+
   func stop() -> AnyPublisher<Void, CompositeErrorRepository> {
     Future<Void, CompositeErrorRepository> { [weak self] promise in
       self?.audioRecorder?.stop()
@@ -55,14 +61,14 @@ extension VoiceRecordClient {
     }
     .eraseToAnyPublisher()
   }
-  
+
   func pathRecordingList() -> AnyPublisher<[String], CompositeErrorRepository> {
     Future<[String], CompositeErrorRepository> { promise in
       guard let pathDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
       else { return promise(.failure(.notFoundFilePath)) }
-      
+
       print("녹음된 파일들 주소: ", pathDirectory.absoluteString)
-      
+
       do {
         let url = try FileManager.default.contentsOfDirectory(at: pathDirectory, includingPropertiesForKeys: .none)
         let recordingList = url.filter { $0.pathExtension == "wav" }.map { $0.lastPathComponent }
@@ -73,11 +79,10 @@ extension VoiceRecordClient {
     }
     .eraseToAnyPublisher()
   }
-  
-  
+
   func deleteRecording(id: String) -> AnyPublisher<String, CompositeErrorRepository> {
     Future<String, CompositeErrorRepository> { promise in
-      guard let path = FileManager.default.findPath(id) else { return promise(.failure(.notFoundFilePath) )}
+      guard let path = FileManager.default.findPath(id) else { return promise(.failure(.notFoundFilePath)) }
       do {
         try FileManager.default.removeItem(at: path)
         return promise(.success(id))
@@ -89,9 +94,10 @@ extension VoiceRecordClient {
   }
 }
 
+// MARK: AVAudioRecorderDelegate
 
 extension VoiceRecordClient: AVAudioRecorderDelegate {
-  func audioRecorderEncodeErrorDidOccur(_ recorder: AVAudioRecorder, error: Error?) {
+  func audioRecorderEncodeErrorDidOccur(_: AVAudioRecorder, error: Error?) {
     print("[Error] VoiceRecordClient: ", error?.localizedDescription ?? "")
   }
 }
@@ -104,7 +110,7 @@ extension FileManager {
         .appending(component: "\(name).wav")
     }
   }
-  
+
   fileprivate var findPath: (String) -> URL? {
     { name in
       self.urls(for: .documentDirectory, in: .userDomainMask)
@@ -113,9 +119,7 @@ extension FileManager {
     }
   }
 
-  
 }
-
 
 extension [String: Any] {
   fileprivate static var `default`: Self {
@@ -126,7 +130,7 @@ extension [String: Any] {
       AVLinearPCMBitDepthKey: 16,
       AVLinearPCMIsBigEndianKey: false,
       AVLinearPCMIsFloatKey: false,
-      AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
+      AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue,
     ]
   }
 }

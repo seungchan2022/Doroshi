@@ -20,7 +20,7 @@ extension AudioMemoEnvLive: AudioMemoEnvType {
   var routeToTabItem: (String) -> Void {
     { path in
       guard path != Link.VoiceMemo.Path.audioMemo.rawValue else { return }
-      navigator.replace(linkItem: .init(path: path), isAnimated: false)
+navigator.replace(linkItem: .init(path: path), isAnimated: false)   
     }
   }
 }

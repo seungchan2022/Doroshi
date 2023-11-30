@@ -21,10 +21,10 @@ extension MemoEditorPage {
   private var title: String {
     ""
   }
-  
+
   private var updateButtonTitle: String {
     switch viewStore.mode {
-    case .create: 
+    case .create:
       "생성"
     case .edit:
       "완료"
@@ -55,21 +55,22 @@ extension MemoEditorPage: View {
           Divider()
             .background(DesignSystemColor.palette(.gray(.lv100)).color)
 
-            TextEditor(text: viewStore.$content)
-              .font(.system(size: 20))
-              .overlay {
-                if viewStore.content.isEmpty {
-                  Text("메모를 입력하세요.")
-                    .font(.system(size: 16))
-                    .foregroundStyle(DesignSystemColor.palette(.gray(.lv250)).color)
-                    .padding(.top, 8)
-                    .padding(.leading, 5)
-                }
+          TextEditor(text: viewStore.$content)
+            .font(.system(size: 20))
+            .overlay {
+              if viewStore.content.isEmpty {
+                Text("메모를 입력하세요.")
+                  .font(.system(size: 16))
+                  .foregroundStyle(DesignSystemColor.palette(.gray(.lv250)).color)
+                  .padding(.top, 8)
+                  .padding(.leading, 5)
               }
+            }
         }
         .padding(.horizontal, 30)
       }
     }
+    .ignoresSafeArea(.all, edges: .bottom)
     .navigationTitle("")
     .navigationBarHidden(true)
   }

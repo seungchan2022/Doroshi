@@ -32,14 +32,14 @@ extension TimerStore: Reducer {
       case .routeToTabBarItem(let matchPath):
         env.routeToTabItem(matchPath)
         return .none
-        
+
       case .routeToDetail:
         env.routeToDetail(.init(
           hour: state.hour,
           minute: state.minute,
           second: state.second))
         return .none
-      
+
       case .throwError(let error):
         print(error)
         return .none
@@ -66,9 +66,9 @@ extension TimerStore {
     case teardown
 
     case routeToTabBarItem(String)
-        
+
     case routeToDetail
-    
+
     case throwError(CompositeErrorRepository)
   }
 }

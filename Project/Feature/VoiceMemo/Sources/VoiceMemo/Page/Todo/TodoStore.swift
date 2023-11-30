@@ -36,7 +36,7 @@ extension TodoStore: Reducer {
       case .routeToTabBarItem(let matchPath):
         env.routeToTabItem(matchPath)
         return .none
-        
+
       case .routeToAlert:
         env.routeToAlert()
         return .none
@@ -104,7 +104,7 @@ extension TodoStore {
     case getTotoList
 
     case routeToTabBarItem(String)
-    
+
     case routeToAlert
 
     case onTapTodoEditor // 투두 작성 버튼

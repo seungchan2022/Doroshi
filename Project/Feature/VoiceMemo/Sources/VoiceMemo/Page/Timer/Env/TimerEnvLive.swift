@@ -7,7 +7,7 @@ import LinkNavigator
 // MARK: - TimerEnvLive
 
 struct TimerEnvLive {
-
+  
   let useCaseGroup: VoiceMemoEnvironmentUseable
   let mainQueue: AnySchedulerOf<DispatchQueue> = .main
   let navigator: RootNavigatorType
@@ -25,6 +25,7 @@ extension TimerEnvLive: TimerEnvType {
   
   var routeToDetail: (TimerEntity.AlarmItem) -> Void {
     { item in
+            
       navigator.backOrNext(
         linkItem: .init(
           path: Link.VoiceMemo.Path.timerDetail.rawValue,

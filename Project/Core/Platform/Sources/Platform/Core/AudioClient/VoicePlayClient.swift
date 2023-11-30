@@ -1,16 +1,21 @@
-import Foundation
 import AVFoundation
-import Domain
 import Combine
 import CombineExt
+import Domain
+import Foundation
 
+// MARK: - VoicePlayClient
 
 final class VoicePlayClient: NSObject, ObservableObject {
-  
+
+  // MARK: Lifecycle
+
   override init() {
     super.init()
   }
-  
+
+  // MARK: Private
+
   private var audioPlayer: AudioPlayerCoordinator? = .none
 }
 
@@ -21,7 +26,7 @@ extension VoicePlayClient {
         observer.send(completion: .failure(.notFoundFilePath))
         return AnyCancellable { }
       }
-      
+
       do {
         let audioPlayer = AudioPlayerCoordinator(
           path: path,
@@ -31,14 +36,14 @@ extension VoicePlayClient {
       } catch {
         observer.send(completion: .failure(.notFoundFilePath))
       }
-      
+
       return AnyCancellable {
         self.audioPlayer?.stop()
         self.audioPlayer = .none
       }
     }
   }
-  
+
   func stop() -> AnyPublisher<Void, CompositeErrorRepository> {
     Future<Void, CompositeErrorRepository> { [weak self] promise in
       self?.audioPlayer?.stop()
@@ -46,7 +51,7 @@ extension VoicePlayClient {
     }
     .eraseToAnyPublisher()
   }
-  
+
 }
 
 extension FileManager {
@@ -59,17 +64,22 @@ extension FileManager {
   }
 }
 
+// MARK: - AudioPlayerCoordinator
+
 private class AudioPlayerCoordinator: NSObject {
-  let path: URL
-  let action: (VoiceEntity.Action) -> Void
-  
-  private var audioPlayer: AVAudioPlayer? = .none
-  
+
+  // MARK: Lifecycle
+
   init(path: URL, action: @escaping (VoiceEntity.Action) -> Void) {
     self.path = path
     self.action = action
   }
-  
+
+  // MARK: Internal
+
+  let path: URL
+  let action: (VoiceEntity.Action) -> Void
+
   func start() throws {
     let audioPlayer = try AVAudioPlayer(contentsOf: path)
     audioPlayer.play()
@@ -78,14 +88,20 @@ private class AudioPlayerCoordinator: NSObject {
     self.audioPlayer = audioPlayer
     self.audioPlayer?.delegate = self
   }
-  
+
   func stop() {
     audioPlayer?.stop()
   }
+
+  // MARK: Private
+
+  private var audioPlayer: AVAudioPlayer? = .none
 }
 
+// MARK: AVAudioPlayerDelegate
+
 extension AudioPlayerCoordinator: AVAudioPlayerDelegate {
-  func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+  func audioPlayerDidFinishPlaying(_: AVAudioPlayer, successfully _: Bool) {
     action(.idle)
   }
 }

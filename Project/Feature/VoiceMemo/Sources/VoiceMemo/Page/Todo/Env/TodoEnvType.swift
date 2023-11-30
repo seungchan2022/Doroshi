@@ -13,7 +13,7 @@ protocol TodoEnvType {
   var todoList: () -> Effect<TodoStore.Action> { get }
 
   var deleteList: ([TodoEntity.Item]) -> Effect<TodoStore.Action> { get }
-  
+
   var routeToAlert: () -> Void { get }
 
   var routeToTabItem: (String) -> Void { get }

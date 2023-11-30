@@ -3,7 +3,7 @@ import Foundation
 // MARK: - CompositeErrorRepository
 
 public enum CompositeErrorRepository: Error {
-  
+
   case notFoundFilePath
   case invalidTypeCast
   case other(Error)

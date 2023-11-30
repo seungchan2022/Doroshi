@@ -1,9 +1,11 @@
 import Foundation
 
 // MARK: - FetchState
+
 public enum FetchState { }
 
 // MARK: FetchState.Empty
+
 extension FetchState {
   public struct Empty: Equatable {
     public var isLoading = false
@@ -27,6 +29,7 @@ extension FetchState {
 }
 
 // MARK: FetchState.Data
+
 extension FetchState {
   public struct Data<V: Equatable>: Equatable {
     public var isLoading = false

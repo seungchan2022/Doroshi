@@ -40,7 +40,7 @@ extension MemoStore: Reducer {
       case .onTapMemoEditor:
         env.routeToMemoEditor(.none)
         return .none
-        
+
       case .onTapEdit(let item):
         env.routeToMemoEditor(item)
         return .none
@@ -101,7 +101,7 @@ extension MemoStore {
     case getMemoList
 
     case routeToTabBarItem(String)
-    
+
     case onTapMemoEditor
     case onTapEdit(MemoEntity.Item)
 

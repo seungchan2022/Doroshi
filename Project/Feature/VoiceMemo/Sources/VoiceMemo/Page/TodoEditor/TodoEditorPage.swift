@@ -109,7 +109,7 @@ extension TodoEditorPage: View {
           Spacer()
         }
       })
-
+    .ignoresSafeArea(.all, edges: .bottom)
     .navigationTitle("")
     .navigationBarHidden(true)
   }

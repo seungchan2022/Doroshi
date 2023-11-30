@@ -47,7 +47,7 @@ extension TodoPage: View {
                   action: { viewStore.send(.onTapDeleteList(viewStore.fetchTodoList)) }),
                 .init(
                   title: "삭제",
-                  action: { viewStore.send(.routeToAlert)})
+                  action: { viewStore.send(.routeToAlert) }),
               ]),
             title: "To do list \(viewStore.fetchTodoList.count)개가\n있습니다.")
           {

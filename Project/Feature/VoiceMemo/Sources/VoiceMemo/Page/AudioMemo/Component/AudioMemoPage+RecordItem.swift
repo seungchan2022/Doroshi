@@ -1,16 +1,17 @@
+import DesignSystem
 import Foundation
 import SwiftUI
-import DesignSystem
+
+// MARK: - AudioMemoPage.RecordItem
 
 extension AudioMemoPage {
-  struct RecordItem {
+  struct RecordItem { 
     let viewState: ViewState
     let swipeAction: (String?) -> Void
     let playingAction: (Bool) -> Void
     let deleteAction: (String) -> Void
-    
+
     private let distance: CGFloat = 30
-    
     @State private var color: Color = .white
   }
 }
@@ -31,7 +32,7 @@ extension AudioMemoPage.RecordItem: View {
           .padding(.horizontal, 16)
           .tint(.white)
         }
-      
+
       Text(viewState.id)
         .opacity(viewState.isPlaying ? 0.2 : 1)
         .onTapGesture {
@@ -46,7 +47,7 @@ extension AudioMemoPage.RecordItem: View {
         .gesture(
           DragGesture()
             .onChanged { value in
-              guard let direction = value.translation.width.conver(distance: distance) else { return }
+              guard let direction = value.translation.width.convert(distance: distance) else { return }
               switch direction {
               case .hiding: swipeAction(.none)
               case .showing: swipeAction(viewState.id)
@@ -57,28 +58,29 @@ extension AudioMemoPage.RecordItem: View {
           let _ = try? await Task.sleep(for: .seconds(1))
           color = .red
         }
-      
     }
     .overlay(alignment: .bottom, content: {
-      if !viewState.isLastItem {
-        Divider()
-          .background(DesignSystemColor.palette(.gray(.lv100)).color)
-          .padding(.leading, 16)
-      }
-      
+      Divider()
+        .background(DesignSystemColor.palette(.gray(.lv100)).color)
+        .padding(.leading, 16)
     })
     .frame(maxWidth: .infinity)
   }
+
+  private func gestureAction(width: CGFloat) {
+
+  }
 }
 
-extension AudioMemoPage.RecordItem {
+extension AudioMemoPage.RecordItem { 
+
   struct ViewState: Equatable, Identifiable {
     let id: String
     let isPlaying: Bool
     let isLastItem: Bool
     let isEdit: Bool
   }
-  
+
   fileprivate enum Direction: Equatable {
     case showing
     case hiding
@@ -86,7 +88,7 @@ extension AudioMemoPage.RecordItem {
 }
 
 extension CGFloat {
-  fileprivate func conver(distance: CGFloat) -> AudioMemoPage.RecordItem.Direction? {
+  fileprivate func convert(distance: CGFloat) -> AudioMemoPage.RecordItem.Direction? {
     if self > distance { return .hiding }
     else if self < -distance { return .showing }
     else { return .none }

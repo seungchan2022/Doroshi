@@ -1,20 +1,20 @@
+import Combine
 import Domain
 import Foundation
-import Combine
 
 // MARK: - MemoUseCasePlatform
 
 public struct MemoUseCasePlatform {
-  
+
   public init() { }
-  
+
   let client: StorageClient<[MemoEntity.Item]> = .init(type: .memo, defaultValue: [])
 }
 
 // MARK: MemoUseCase
 
 extension MemoUseCasePlatform: MemoUseCase {
-  
+
   public var createOrUpdate: (MemoEntity.Item) -> AnyPublisher<MemoEntity.Item, CompositeErrorRepository> {
     { new in
       Future<MemoEntity.Item, CompositeErrorRepository> { promise in
@@ -26,7 +26,7 @@ extension MemoUseCasePlatform: MemoUseCase {
       .eraseToAnyPublisher()
     }
   }
-  
+
   public var deleteTargetList: ([MemoEntity.Item]) -> AnyPublisher<[MemoEntity.Item], CompositeErrorRepository> {
     { targetList in
       Future<[MemoEntity.Item], CompositeErrorRepository> { promise in
@@ -37,8 +37,7 @@ extension MemoUseCasePlatform: MemoUseCase {
       .eraseToAnyPublisher()
     }
   }
-  
-  
+
   public var get: () -> AnyPublisher<[MemoEntity.Item], CompositeErrorRepository> {
     {
       Future<[MemoEntity.Item], CompositeErrorRepository> { promise in
@@ -53,7 +52,7 @@ extension [MemoEntity.Item] {
   fileprivate func add(new: MemoEntity.Item) -> Self {
     self.filter { $0.id != new.id } + [new]
   }
-  
+
   fileprivate func delete(targetList: [MemoEntity.Item]) -> Self {
     self.filter { item in
       !targetList.contains(where: { $0.id == item.id })

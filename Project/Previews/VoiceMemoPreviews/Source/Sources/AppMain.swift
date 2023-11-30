@@ -6,7 +6,9 @@ import SwiftUI
 struct AppMain: App {
 
   @State private var viewModel = AppMainViewModel()
-  
+
+//  let notification = NotificationDelegate()
+
   var body: some Scene {
     WindowGroup {
       LinkNavigationView(

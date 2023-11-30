@@ -1,5 +1,5 @@
-import Foundation
 import Combine
+import Foundation
 
 public protocol MemoUseCase {
   var createOrUpdate: (MemoEntity.Item) -> AnyPublisher<MemoEntity.Item, CompositeErrorRepository> { get }

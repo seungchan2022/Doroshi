@@ -19,8 +19,7 @@ extension TodoEnvLive: TodoEnvType {
   var routeToTabItem: (String) -> Void {
     { path in
       guard path != Link.VoiceMemo.Path.todo.rawValue else { return }
-      navigator.replace(linkItem: .init(path: path), isAnimated: false)
-    }
+navigator.replace(linkItem: .init(path: path), isAnimated: false)    }
   }
 
   // Todo 작성
@@ -33,19 +32,18 @@ extension TodoEnvLive: TodoEnvType {
         isAnimated: true)
     }
   }
-  
+
   var routeToAlert: () -> Void {
-    { 
+    {
       navigator.alert(
         target: .root,
         model: .init(
           message: "test",
           buttons: [
-            .init(title: "취소", style: .cancel, action: {  }),
-            .init(title: "삭제", style: .default, action: {  })
+            .init(title: "취소", style: .cancel, action: { }),
+            .init(title: "삭제", style: .default, action: { }),
           ],
           flagType: .default))
     }
   }
 }
- 

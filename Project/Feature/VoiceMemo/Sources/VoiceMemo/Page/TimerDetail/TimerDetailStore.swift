@@ -20,7 +20,7 @@ struct TimerDetailStore {
 extension TimerDetailStore: Reducer {
   var body: some ReducerOf<Self> {
     BindingReducer()
-    Reduce { state, action in
+    Reduce { _, action in
       switch action {
       case .binding:
         return .none
@@ -28,15 +28,15 @@ extension TimerDetailStore: Reducer {
       case .teardown:
         return .concatenate(
           CancelID.allCases.map { .cancel(pageID: pageID, id: $0) })
-        
+
       case .routeToTabBarItem(let matchPath):
         env.routeToTabItem(matchPath)
         return .none
-        
+
       case .onTapback:
         env.routeToBack()
         return .none
-        
+
       case .onPullTimer:
         print("AAA")
         return .none
@@ -53,18 +53,18 @@ extension TimerDetailStore: Reducer {
 
 extension TimerDetailStore {
   struct State: Equatable {
-    
+
     init(alarmInfo: TimerEntity.AlarmItem) {
-      self.hour = alarmInfo.hour
-      self.minute = alarmInfo.minute
-      self.second = alarmInfo.second
+      hour = alarmInfo.hour
+      minute = alarmInfo.minute
+      second = alarmInfo.second
     }
-    
+
     var hour: Int
     var minute: Int
     var second: Int
-    
-    @BindingState var isPause: Bool = false
+
+    @BindingState var isPause = false
   }
 }
 
@@ -74,13 +74,13 @@ extension TimerDetailStore {
   enum Action: Equatable, BindableAction {
     case binding(BindingAction<State>)
     case teardown
-    
+
     case routeToTabBarItem(String)
 
     case onTapback
-    
+
     case onPullTimer
-    
+
     case throwError(CompositeErrorRepository)
   }
 }

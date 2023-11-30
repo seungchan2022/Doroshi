@@ -67,14 +67,14 @@ extension MemoEditorStore {
         return .init(timeIntervalSince1970: date)
       }()
       content = injectionItem?.content ?? ""
-      
+
       mode = injectionItem == .none ? .create : .edit
     }
 
     @BindingState var title = ""
     @BindingState var date = Date.now
     @BindingState var content = ""
-    
+
     let mode: Mode
   }
 }
@@ -101,7 +101,7 @@ extension MemoEditorStore {
     case teardown
     case requestSaveItem
   }
-  
+
   enum Mode: Equatable {
     case create
     case edit

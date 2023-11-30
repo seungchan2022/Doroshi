@@ -7,32 +7,32 @@ import SwiftUI
 // MARK: - AudioMemoPage
 
 struct AudioMemoPage {
-  
+
   init(store: StoreOf<AudioMemoStore>) {
     self.store = store
     viewStore = ViewStore(store, observe: { $0 })
   }
-  
+
   private let store: StoreOf<AudioMemoStore>
   @ObservedObject private var viewStore: ViewStoreOf<AudioMemoStore>
-  
+
   @State private var isEditingFocus: String? = .none
-  
+
 }
 
 extension AudioMemoPage {
   private var tabNavigationComponentViewState: TabNavigationComponent.ViewState {
     .init(activeMatchPath: Link.VoiceMemo.Path.audioMemo.rawValue)
   }
-  
+
   private var title: String {
     "음성 메모"
   }
-  
+
   private var recordButtonViewState: RecordButton.ViewState {
     .init(isRecording: viewStore.isRecording)
   }
-  
+
   private var maxDragDistance: CGFloat {
     100
   }
@@ -42,9 +42,9 @@ extension AudioMemoPage {
 
 extension AudioMemoPage: View {
   var body: some View {
-    VStack {
+    VStack(spacing: .zero) {
       DesignSystemNavigation(title: title) {
-        
+
         ScrollView {
           LazyVStack(alignment: .leading, spacing: .zero) {
             ForEach(viewStore.fetchRecordList, id: \.self) { item in
@@ -57,9 +57,9 @@ extension AudioMemoPage: View {
                 swipeAction: { self.isEditingFocus = $0 },
                 playingAction: {
                   viewStore.send(
-                    $0 ? .onTapPlayStop : .onTapPlayStart(item))
+                      $0 ? .onTapPlayStop : .onTapPlayStart(item))
                 },
-                deleteAction: { viewStore.send(.onTapDelete($0))} )
+                deleteAction: { viewStore.send(.onTapDelete($0)) })
             }
           }
           .animation(.spring(), value: viewStore.fetchRecordList)
@@ -68,8 +68,7 @@ extension AudioMemoPage: View {
       .overlay(alignment: .bottomTrailing) {
         RecordButton(
           viewState: recordButtonViewState,
-          tapAction: { viewStore.send($0 ? .onTapRecordStop : .onTapRecordStart) }
-        )
+          tapAction: { viewStore.send($0 ? .onTapRecordStop : .onTapRecordStart) })
       }
       TabNavigationComponent(
         viewState: tabNavigationComponentViewState,

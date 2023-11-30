@@ -3,7 +3,7 @@ import UIKit
 
 public struct WindowAppearance {
   static var safeArea: UIEdgeInsets {
-    guard
+    guard 
       let windowScene = UIApplication.shared.connectedScenes.first(where: {
         $0.activationState == .foregroundActive
         || $0.activationState == .foregroundInactive

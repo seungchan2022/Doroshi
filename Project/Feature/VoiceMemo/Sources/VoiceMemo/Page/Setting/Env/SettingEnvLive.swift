@@ -19,8 +19,7 @@ extension SettingEnvLive: SettingEnvType {
   var routeToTabItem: (String) -> Void {
     { path in
       guard path != Link.VoiceMemo.Path.setting.rawValue else { return }
-      navigator.replace(linkItem: .init(path: path), isAnimated: false)
-    }
+navigator.replace(linkItem: .init(path: path), isAnimated: false)    }
   }
 
   var routeToTodo: () -> Void {

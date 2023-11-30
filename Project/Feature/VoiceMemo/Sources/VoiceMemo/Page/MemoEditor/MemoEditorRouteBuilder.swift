@@ -23,4 +23,3 @@ struct MemoEditorRouteBuilder<RootNavigator: RootNavigatorType> {
     }
   }
 }
-

@@ -1,16 +1,20 @@
-import Foundation
 import Combine
 import Domain
+import Foundation
+
+// MARK: - VoiceUseCasePlatform
 
 public struct VoiceUseCasePlatform {
   private let recordClient = VoiceRecordClient()
   private let playClient = VoicePlayClient()
-  
+
   public init() { }
 }
 
+// MARK: VoiceUseCase
+
 extension VoiceUseCasePlatform: VoiceUseCase {
-  public  var startRecording: (String) -> AnyPublisher<URL, CompositeErrorRepository> {
+  public var startRecording: (String) -> AnyPublisher<URL, CompositeErrorRepository> {
     { id in
       recordClient
         .prepare()
@@ -19,7 +23,7 @@ extension VoiceUseCasePlatform: VoiceUseCase {
         .eraseToAnyPublisher()
     }
   }
-  
+
   public var stopRecording: () -> AnyPublisher<Void, CompositeErrorRepository> {
     {
       recordClient
@@ -27,7 +31,7 @@ extension VoiceUseCasePlatform: VoiceUseCase {
         .eraseToAnyPublisher()
     }
   }
-  
+
   public var getRecordingList: () -> AnyPublisher<[String], CompositeErrorRepository> {
     {
       recordClient
@@ -35,7 +39,7 @@ extension VoiceUseCasePlatform: VoiceUseCase {
         .eraseToAnyPublisher()
     }
   }
-  
+
   public var deleteRecord: (String) -> AnyPublisher<String, CompositeErrorRepository> {
     { id in
       recordClient
@@ -51,7 +55,7 @@ extension VoiceUseCasePlatform: VoiceUseCase {
         .eraseToAnyPublisher()
     }
   }
-  
+
   public var stopPlaying: () -> AnyPublisher<Void, CompositeErrorRepository> {
     {
       playClient

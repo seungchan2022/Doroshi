@@ -1,14 +1,17 @@
 import Foundation
 
 // MARK: - Reference
+
 private final class Reference<T: Equatable>: Equatable {
 
   // MARK: Lifecycle
+
   init(_ value: T) {
     self.value = value
   }
 
   // MARK: Internal
+
   var value: T
 
   static func == (lhs: Reference<T>, rhs: Reference<T>) -> Bool {
@@ -17,15 +20,18 @@ private final class Reference<T: Equatable>: Equatable {
 }
 
 // MARK: - Heap
+
 @propertyWrapper
 public struct Heap<T: Equatable>: Equatable {
 
   // MARK: Lifecycle
+
   public init(_ value: T) {
     reference = .init(value)
   }
 
   // MARK: Public
+
   public var wrappedValue: T {
     get { reference.value }
     set {
@@ -42,6 +48,7 @@ public struct Heap<T: Equatable>: Equatable {
   }
 
   // MARK: Private
+
   private var reference: Reference<T>
 
 }
