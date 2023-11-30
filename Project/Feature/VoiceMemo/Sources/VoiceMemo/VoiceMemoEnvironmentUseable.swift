@@ -5,4 +5,5 @@ public protocol VoiceMemoEnvironmentUseable {
   var memoUseCase: MemoUseCase { get }
   var settingUseCase: SettingUseCase { get }
   var voiceUseCase: VoiceUseCase { get }
+  var cacheUseCase: CacheUseCase { get }
 }

@@ -25,7 +25,10 @@ extension TimerEnvLive: TimerEnvType {
   
   var routeToDetail: (TimerEntity.AlarmItem) -> Void {
     { item in
-            
+      
+      let setting = useCaseGroup.cacheUseCase.getSetting()
+      useCaseGroup.cacheUseCase.setSetting(setting.mutate(alarmItem: item))
+      
       navigator.backOrNext(
         linkItem: .init(
           path: Link.VoiceMemo.Path.timerDetail.rawValue,
